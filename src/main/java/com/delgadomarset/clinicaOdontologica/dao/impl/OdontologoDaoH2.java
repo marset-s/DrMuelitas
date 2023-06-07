@@ -162,6 +162,47 @@ public class OdontologoDaoH2 implements IDao<Odontologo> {
         return null;
     }
 
+    @Override
+    public Odontologo actualizar(Odontologo odontologo) {
+        Connection connection = null;
+
+        try {
+            connection = H2Connection.getConnection();
+            connection.setAutoCommit(false);
+
+            PreparedStatement ps = connection.prepareStatement("UPDATE ODONTOLOGOS SET MATRICULA = ?, NOMBRE = ?, APELLIDO = ? WHERE ID = ?");
+            ps.setString(1, odontologo.getMatricula());
+            ps.setString(2, odontologo.getNombre());
+            ps.setString(3, odontologo.getApellido());
+            ps.setInt(4, odontologo.getId());
+            ps.execute();
+            connection.commit();
+            LOGGER.warn("El odontologo con id " + odontologo.getId() + " ha sido actualizado. " + odontologo);
+
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
+            if (connection != null) {
+                try {
+                    connection.rollback();
+                    System.out.println("Tuvimos un problema");
+                    e.printStackTrace();
+                } catch (SQLException exception) {
+                    LOGGER.error(exception.getMessage());
+                    exception.printStackTrace();
+                }
+            }
+        } finally {
+            try {
+                connection.close();
+            } catch (Exception ex) {
+                LOGGER.error("Ha ocurrido un error al intentar cerrar la bdd. " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
+        return odontologo;
+    }
+
     private Odontologo crearObjetoOdontologo(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("id");
         String nombre = resultSet.getString("nombre");

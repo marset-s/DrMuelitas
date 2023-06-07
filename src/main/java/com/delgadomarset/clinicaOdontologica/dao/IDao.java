@@ -16,4 +16,5 @@ public interface IDao<T>  {
     //es un metodo generico, para reutilizar
     T buscarPorCriterio(String criterio);
 
+    T actualizar(T t);
 }
