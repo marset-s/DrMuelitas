@@ -3,12 +3,15 @@ package com.delgadomarset.clinicaOdontologica.controller;
 
 import com.delgadomarset.clinicaOdontologica.dto.PacienteDto;
 
+import com.delgadomarset.clinicaOdontologica.entity.Paciente;
 import com.delgadomarset.clinicaOdontologica.service.IPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/pacientes")
@@ -40,7 +43,36 @@ public class PacienteController {
         return respuesta;
     }
 
-    //faltan los otros metodos: post, put, delete..
+    @GetMapping
+    public List<PacienteDto> listarPacientes(){
+        return pacienteService.listarPacientes();
+    }
 
+    //POST
+    @PostMapping("/registrar")
+    public ResponseEntity<PacienteDto> guardarPaciente(@RequestBody Paciente paciente){
+        ResponseEntity<PacienteDto> respuesta;
+        PacienteDto pacienteDto = pacienteService.guardarPaciente(paciente);
+        if(pacienteDto != null) respuesta = new ResponseEntity<>(pacienteDto, null, HttpStatus.CREATED);
+        else respuesta = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return respuesta;
+    }
+
+    //PUT
+    @PutMapping("/actualizar")
+    public ResponseEntity<PacienteDto> actualizarPaciente(@RequestBody Paciente paciente){
+        ResponseEntity<PacienteDto> respuesta;
+        PacienteDto pacienteDto = pacienteService.actualizarPaciente(paciente);
+        if(pacienteDto != null) respuesta = new ResponseEntity<>(pacienteDto, null, HttpStatus.OK);
+        else respuesta = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return respuesta;
+    }
+
+
+    //DELETE
+    @DeleteMapping("eliminar/{id}")
+    public void eliminarPaciente(@PathVariable int id){
+        pacienteService.eliminarPaciente(id);
+    }
 
 }
