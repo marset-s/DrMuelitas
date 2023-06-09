@@ -3,6 +3,7 @@ package com.delgadomarset.clinicaOdontologica.controller;
 import com.delgadomarset.clinicaOdontologica.dto.OdontologoDto;
 import com.delgadomarset.clinicaOdontologica.entity.Odontologo;
 import com.delgadomarset.clinicaOdontologica.service.impl.OdontologoService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,14 @@ public class OdontologoController {
 
     private OdontologoService odontologoService;
 
+    //private ObjectMapper objectMapper;
+
     @Autowired
-    public OdontologoController(OdontologoService odontologoService) {
+    public OdontologoController(OdontologoService odontologoService, ObjectMapper objectMapper) {
         this.odontologoService = odontologoService;
+        //this.objectMapper = objectMapper;
     }
+
 
       /*@GetMapping("/index")
     public String buscarOdontologo(Model model, @RequestParam("id") int id) {
@@ -43,6 +48,7 @@ public class OdontologoController {
         if(odontologoDto != null) respuesta = new ResponseEntity<>(odontologoDto, null, HttpStatus.CREATED);
         else respuesta = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         return respuesta;
+        //objectMapper.convertValue(odontologoIdao.buscarPorId(id), OdontologoDto.class);
     }
 
     //POST
