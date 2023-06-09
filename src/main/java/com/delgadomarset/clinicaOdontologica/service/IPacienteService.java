@@ -1,19 +1,20 @@
 package com.delgadomarset.clinicaOdontologica.service;
 
 
+import com.delgadomarset.clinicaOdontologica.dto.PacienteDto;
 import com.delgadomarset.clinicaOdontologica.entity.Paciente;
 
 import java.util.List;
 
 public interface IPacienteService {
 
-    List<Paciente> listarPacientes();
-    Paciente buscarPacientePorDni(String dni);
+    List<PacienteDto> listarPacientes();
+    PacienteDto buscarPacientePorDni(String dni);
 
-    Paciente buscarPacientePorId(int id);
+    PacienteDto buscarPacientePorId(int id);
 
-    Paciente guardarPaciente(Paciente paciente);
-    Paciente actualizarPaciente(Paciente paciente);
+    PacienteDto guardarPaciente(Paciente paciente);
+    PacienteDto actualizarPaciente(Paciente paciente);
     void eliminarPaciente(int id);
 
 }
