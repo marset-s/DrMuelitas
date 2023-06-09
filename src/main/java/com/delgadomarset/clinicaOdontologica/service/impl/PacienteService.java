@@ -2,7 +2,7 @@ package com.delgadomarset.clinicaOdontologica.service.impl;
 
 
 
-import com.delgadomarset.clinicaOdontologica.dao.IDao;
+import com.delgadomarset.clinicaOdontologica.repository.IDao;
 import com.delgadomarset.clinicaOdontologica.entity.Paciente;
 import com.delgadomarset.clinicaOdontologica.service.IPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;

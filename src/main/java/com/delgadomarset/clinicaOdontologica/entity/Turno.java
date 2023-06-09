@@ -6,13 +6,34 @@ import java.time.LocalTime;
 
 public class Turno {
 
+    private int id;
     private LocalDateTime fechaHora;
     private Odontologo odontologo;
 
+    private Paciente paciente;
 
-    public Turno(LocalDateTime fechaHora, Odontologo odontologo) {
+    public Turno() {
+    }
+
+    public Turno(int id, LocalDateTime fechaHora, Odontologo odontologo, Paciente paciente) {
+        this.id = id;
         this.fechaHora = fechaHora;
         this.odontologo = odontologo;
+        this.paciente = paciente;
+    }
+
+    public Turno(LocalDateTime fechaHora, Odontologo odontologo, Paciente paciente) {
+        this.fechaHora = fechaHora;
+        this.odontologo = odontologo;
+        this.paciente = paciente;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public LocalDateTime getFechaHora() {
@@ -31,8 +52,11 @@ public class Turno {
         this.odontologo = odontologo;
     }
 
-    @Override
-    public String toString(){
-        return "Turno: " + fechaHora + "Odontologo: " + odontologo;
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
     }
 }

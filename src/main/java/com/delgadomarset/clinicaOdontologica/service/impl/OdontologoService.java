@@ -1,7 +1,7 @@
 package com.delgadomarset.clinicaOdontologica.service.impl;
 
 
-import com.delgadomarset.clinicaOdontologica.dao.IDao;
+import com.delgadomarset.clinicaOdontologica.repository.IDao;
 import com.delgadomarset.clinicaOdontologica.entity.Odontologo;
 import com.delgadomarset.clinicaOdontologica.service.IOdontologoService;
 

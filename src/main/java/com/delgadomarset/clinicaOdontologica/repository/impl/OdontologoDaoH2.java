@@ -1,9 +1,9 @@
-package com.delgadomarset.clinicaOdontologica.dao.impl;
+package com.delgadomarset.clinicaOdontologica.repository.impl;
 
 
 
-import com.delgadomarset.clinicaOdontologica.dao.H2Connection;
-import com.delgadomarset.clinicaOdontologica.dao.IDao;
+import com.delgadomarset.clinicaOdontologica.repository.H2Connection;
+import com.delgadomarset.clinicaOdontologica.repository.IDao;
 import com.delgadomarset.clinicaOdontologica.entity.Odontologo;
 
 import org.slf4j.Logger;

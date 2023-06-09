@@ -1,4 +1,4 @@
-package com.delgadomarset.clinicaOdontologica.dao;
+package com.delgadomarset.clinicaOdontologica.repository;
 
 import java.util.List;
 

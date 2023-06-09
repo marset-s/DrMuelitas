@@ -13,6 +13,9 @@ public class Paciente {
 
     private Turno turno;
 
+    public Paciente() {
+    }
+
     public Paciente(String nombre, String apellido, String dni, LocalDate fechaIngreso, Domicilio domicilio, Turno turno) {
         this.nombre = nombre;
         this.apellido = apellido;
