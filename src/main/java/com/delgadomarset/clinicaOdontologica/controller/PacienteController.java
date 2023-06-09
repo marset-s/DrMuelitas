@@ -1,16 +1,16 @@
 package com.delgadomarset.clinicaOdontologica.controller;
 
 
-import com.delgadomarset.clinicaOdontologica.entity.Paciente;
+import com.delgadomarset.clinicaOdontologica.dto.PacienteDto;
+
 import com.delgadomarset.clinicaOdontologica.service.IPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-@Controller
+import org.springframework.web.bind.annotation.*;
+
+@RestController
 @RequestMapping("/pacientes")
 public class PacienteController {
     private IPacienteService pacienteService;
@@ -20,14 +20,27 @@ public class PacienteController {
         this.pacienteService = pacienteService;
     }
 
-    @GetMapping("/index")
-    public String buscarPacientePorDni(Model model, @RequestParam("dni") String dni){
-        Paciente paciente = pacienteService.buscarPacientePorDni(dni);
-
-        //agregar los atributos del objeto al modelo que mostraremos en la vista
-        model.addAttribute("nombre", paciente.getNombre());
-        model.addAttribute("apellido", paciente.getApellido());
-
-        return "index";
+    //GET
+    @GetMapping("/{dni}")
+    public ResponseEntity<PacienteDto> buscarPacientePorDni(@PathVariable String dni){
+        ResponseEntity<PacienteDto> respuesta;
+        PacienteDto pacienteDto = pacienteService.buscarPacientePorDni(dni);
+        if(pacienteDto != null) respuesta = new ResponseEntity<>(pacienteDto, null, HttpStatus.CREATED);
+        else respuesta =  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return respuesta;
     }
+
+    //GET
+    @GetMapping("/{id}")
+    public ResponseEntity<PacienteDto> buscarPacientePorId(@PathVariable int id){
+        ResponseEntity<PacienteDto> respuesta;
+        PacienteDto pacienteDto = pacienteService.buscarPacientePorId(id);
+        if(pacienteDto != null) respuesta = new ResponseEntity<>(pacienteDto, null, HttpStatus.CREATED);
+        else respuesta =  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return respuesta;
+    }
+
+    //faltan los otros metodos: post, put, delete..
+
+
 }
