@@ -1,39 +1,43 @@
 package com.delgadomarset.clinicaOdontologica.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+
+import javax.validation.constraints.FutureOrPresent;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@Entity
+@Table(name = "TURNOS")
 public class Turno {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @FutureOrPresent
     private LocalDateTime fechaHora;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "odontologo_id")
     private Odontologo odontologo;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "paciente_id")
     private Paciente paciente;
 
     public Turno() {
     }
-
-    public Turno(int id, LocalDateTime fechaHora, Odontologo odontologo, Paciente paciente) {
-        this.id = id;
-        this.fechaHora = fechaHora;
-        this.odontologo = odontologo;
-        this.paciente = paciente;
-    }
-
     public Turno(LocalDateTime fechaHora, Odontologo odontologo, Paciente paciente) {
         this.fechaHora = fechaHora;
         this.odontologo = odontologo;
         this.paciente = paciente;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public LocalDateTime getFechaHora() {

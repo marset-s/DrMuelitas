@@ -1,6 +1,7 @@
 package com.delgadomarset.clinicaOdontologica.entity;
-
 import jakarta.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "DOMICILIOS")
@@ -10,10 +11,17 @@ public class Domicilio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @Size(max = 50, message = "El nombre de la calle debe tener hasta 50 caracteres")
+    @NotNull
     private String calle;
     private int numero;
+
+    @Size(max = 50, message = "El nombre de la localidad debe tener hasta 50 caracteres")
+    @NotNull
     private String localidad;
+
+    @Size(max = 50, message = "El nombre de la provincia debe tener hasta 50 caracteres")
+    @NotNull
     private String provincia;
 
     public Domicilio() {
@@ -65,8 +73,11 @@ public class Domicilio {
         this.provincia = provincia;
     }
 
+    /*
     @Override
     public String toString() {
         return "Id: " + id + " - Calle: " + calle + " - Numero: " + numero + " - Localidad: " + localidad + " - Provincia: " + provincia;
     }
+
+     */
 }

@@ -1,15 +1,8 @@
 package com.delgadomarset.clinicaOdontologica.entity;
-
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
-
 import java.time.LocalDate;
-
-
-
 import jakarta.persistence.*;
-
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

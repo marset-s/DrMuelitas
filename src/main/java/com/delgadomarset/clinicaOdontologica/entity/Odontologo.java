@@ -1,19 +1,31 @@
 package com.delgadomarset.clinicaOdontologica.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
+import org.springframework.data.annotation.Id;
+
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name ="ODONTOLOGOS")
 public class Odontologo {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Size(max = 15)
     private String matricula;
+    @Size(max = 50, message = "El nombre puede tener hasta 50 caracteres")
+    @NotNull
     private String nombre;
+
+    @Size(max = 50, message = "El apellido puede tener hasta 50 caracteres")
+    @NotNull
     private String apellido;
 
     public Odontologo() {
-    }
-
-    public Odontologo(int id, String matricula, String nombre, String apellido) {
-        this.id = id;
-        this.matricula = matricula;
-        this.nombre = nombre;
-        this.apellido = apellido;
     }
 
     public Odontologo(String matricula, String nombre, String apellido) {
@@ -22,13 +34,11 @@ public class Odontologo {
         this.apellido = apellido;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     public String getMatricula() {
         return matricula;
@@ -53,9 +63,11 @@ public class Odontologo {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
-
+/*
     @Override
     public String toString() {
         return "Id: " + id + " - Nombre: " + nombre + " - Apellido: " + apellido + " - Matricula: " + matricula;
     }
+
+ */
 }
