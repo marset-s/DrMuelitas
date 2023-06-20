@@ -1,12 +1,8 @@
 package com.delgadomarset.clinicaOdontologica.service.impl;
 
 
-
 import com.delgadomarset.clinicaOdontologica.dto.DomicilioDto;
 import com.delgadomarset.clinicaOdontologica.dto.PacienteDto;
-
-import com.delgadomarset.clinicaOdontologica.entity.Domicilio;
-
 import com.delgadomarset.clinicaOdontologica.entity.Paciente;
 import com.delgadomarset.clinicaOdontologica.repository.PacienteReposirtory;
 import com.delgadomarset.clinicaOdontologica.service.IPacienteService;
@@ -24,24 +20,25 @@ public class PacienteService implements IPacienteService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PacienteService.class);
 
-    private final PacienteReposirtory pacienteReposirtory;
+    private final PacienteReposirtory pacienteRepository;
     private ObjectMapper objectMapper;
 
     @Autowired
-    public PacienteService(PacienteReposirtory pacienteReposirtory, ObjectMapper objectMapper) {
-        this.pacienteReposirtory = pacienteReposirtory;
+    public PacienteService(PacienteReposirtory pacienteRepository, ObjectMapper objectMapper) {
+        this.pacienteRepository = pacienteRepository;
         this.objectMapper = objectMapper;
     }
 
 
     @Override
     public List<PacienteDto> listarPacientes() {
-        List<Paciente> pacienteList = pacienteReposirtory.findAll();
-        List<PacienteDto> pacienteDtos = listarPacientes().stream()
+        List<PacienteDto> pacienteDtos = pacienteRepository
+                .findAll()
+                .stream()
                 .map(paciente -> {
-                    Domicilio domicilio = paciente.getDomicilo();
-                    DomicilioDto domicilioDto = objectMapper.convertValue(domicilio, DomicilioDto.class);
-                    return  new PacienteDto(paciente.getId(),paciente.getNombre(), paciente.getApellido(), paciente.getDni(), paciente.getFechaIngreso(), domicilioDto);
+                    PacienteDto pacienteDto = objectMapper.convertValue(paciente, PacienteDto.class);
+                    pacienteDto.setDomicilioDto(DomicilioDto.fromDomicilio(paciente.getDomicilio()));
+                    return pacienteDto;
                 })
                 .toList();
         LOGGER.info("Lista de todos los pacientes: {}", pacienteDtos);
@@ -51,12 +48,11 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public PacienteDto buscarPacientePorId(Long id) {
-        Paciente pacienteBuscado = pacienteReposirtory.findById(id).orElse(null);
+        Paciente pacienteBuscado = pacienteRepository.findById(id).orElse(null);
         PacienteDto pacienteDto = null;
         if (pacienteBuscado != null) {
-            DomicilioDto domicilioDto = objectMapper.convertValue(pacienteBuscado.getDomicilio(), DomicilioDto.class);
             pacienteDto = objectMapper.convertValue(pacienteBuscado, PacienteDto.class);
-            pacienteDto.setDomicilioDto(domicilioDto);
+            pacienteDto.setDomicilioDto(DomicilioDto.fromDomicilio(pacienteBuscado.getDomicilio()));
             LOGGER.info("Paciente encontrado: {}", pacienteDto);
 
         } else LOGGER.info("El id no se encuentra registrado en la base de datos");
@@ -64,41 +60,33 @@ public class PacienteService implements IPacienteService {
         return pacienteDto;
     }
 
-
     @Override
-    public PacienteDto guardarPaciente(Paciente paciente) {
-        Paciente pacienteNuevo = pacienteReposirtory.save(paciente);
-        DomicilioDto domicilioDto = objectMapper.convertValue(pacienteNuevo.getDomicilio(), DomicilioDto.class);
-        PacienteDto pacienteDtoNuevo = objectMapper.convertValue(pacienteNuevo, PacienteDto.class);
-        pacienteDtoNuevo.setDomicilioDto(domicilioDto);
-
-        LOGGER.info("Nuevo paciente registrado con exito: {}", pacienteDtoNuevo);
-
-        return pacienteDtoNuevo;
+    public PacienteDto registrarPaciente(Paciente paciente) {
+        PacienteDto pacienteDto = objectMapper.convertValue(pacienteRepository.save(paciente), PacienteDto.class);
+        pacienteDto.setDomicilioDto(DomicilioDto.fromDomicilio(paciente.getDomicilio()));
+        LOGGER.info("Nuevo paciente registrado con exito: {}", pacienteDto);
+        return pacienteDto;
     }
+
 
     @Override
     public PacienteDto actualizarPaciente(Paciente paciente) {
-        Paciente pacienteAActualizar = pacienteReposirtory.findById(paciente.getId()).orElse(null);
+        Paciente pacienteAActualizar = pacienteRepository.findById(paciente.getId()).orElse(null);
         PacienteDto pacienteActualizadoDto = null;
-
         if (pacienteAActualizar != null) {
             pacienteAActualizar = paciente;
-            pacienteReposirtory.save(pacienteAActualizar);
-
-            DomicilioDto domicilioDto = objectMapper.convertValue(pacienteAActualizar.getDomicilio(), DomicilioDto.class);
-            pacienteActualizadoDto = objectMapper.convertValue(pacienteAActualizar, PacienteDto.class);
-            pacienteActualizadoDto.setDomicilioDto(domicilioDto);
-            LOGGER.info("Paciente actualizado con exito: {}", pacienteActualizadoDto);
-
-        } else LOGGER.error("No fue posible actualizar los datos ya que el paciente no se encuentra registrado");
-
+            pacienteActualizadoDto = registrarPaciente(pacienteAActualizar);
+            LOGGER.warn("El paciente con ID {} ha sido actualizado: {}", pacienteAActualizar.getId(), pacienteActualizadoDto);
+        } else
+            LOGGER.warn("No es posible actualizar el paciente porque no está registrado en la base de datos");
         return pacienteActualizadoDto;
 
     }
+
     @Override
     public void eliminarPaciente(Long id) {
-        pacienteReposirtory.deleteById(id);
+        if (pacienteRepository.existsById(id))
+            pacienteRepository.deleteById(id);
         LOGGER.warn("Se ha eliminado el paciente con id {}", id);
     }
 
