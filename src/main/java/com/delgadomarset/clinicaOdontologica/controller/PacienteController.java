@@ -12,11 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/pacientes")
 public class PacienteController {
-    private IPacienteService pacienteService;
+    private final IPacienteService pacienteService;
 
     @Autowired
     public PacienteController(IPacienteService pacienteService) {
@@ -24,6 +24,7 @@ public class PacienteController {
     }
 
     //GET
+    /*
     @GetMapping("/{dni}")
     public ResponseEntity<PacienteDto> buscarPacientePorDni(@PathVariable String dni){
         ResponseEntity<PacienteDto> respuesta;
@@ -33,9 +34,11 @@ public class PacienteController {
         return respuesta;
     }
 
+     */
+
     //GET
     @GetMapping("/{id}")
-    public ResponseEntity<PacienteDto> buscarPacientePorId(@PathVariable int id){
+    public ResponseEntity<PacienteDto> buscarPacientePorId(@PathVariable Long id){
         ResponseEntity<PacienteDto> respuesta;
         PacienteDto pacienteDto = pacienteService.buscarPacientePorId(id);
         if(pacienteDto != null) respuesta = new ResponseEntity<>(pacienteDto, null, HttpStatus.CREATED);
@@ -71,7 +74,7 @@ public class PacienteController {
 
     //DELETE
     @DeleteMapping("eliminar/{id}")
-    public void eliminarPaciente(@PathVariable int id){
+    public void eliminarPaciente(@PathVariable Long id){
         pacienteService.eliminarPaciente(id);
     }
 
