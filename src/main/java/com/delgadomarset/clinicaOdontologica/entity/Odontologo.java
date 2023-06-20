@@ -1,10 +1,7 @@
 package com.delgadomarset.clinicaOdontologica.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.*;
+
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
