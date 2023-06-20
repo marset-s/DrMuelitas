@@ -23,24 +23,64 @@ public class DomicilioDto {
         this.localidad = localidad;
         this.provincia = provincia;
     }
-/*
-    public static DomicilioDto fromDomicilio(Domicilio domicilio){
-        String calle = "Calle: " + domicilio.getCalle();
-        int numero = Integer.parseInt("Numero: " + domicilio.getNumero());
-        String localidad = "Localidad " + domicilio.getLocalidad();
-        String provincia = "Provincia " + domicilio.getProvincia();
-        return new DomicilioDto(calle, numero, localidad, provincia);
+    public static DomicilioDto fromDomicilio(Domicilio domicilio) {
+        return new DomicilioDto(
+                domicilio.getId(),
+                domicilio.getCalle(),
+                domicilio.getNumero(),
+                domicilio.getLocalidad(),
+                domicilio.getProvincia()
+        );
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCalle() {
+        return calle;
+    }
+
+    public void setCalle(String calle) {
+        this.calle = calle;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
     }
 
     @Override
     public String toString() {
         return "DomicilioDto{" +
-                "calle='" + calle + '\'' +
+                "id=" + id +
+                ", calle='" + calle + '\'' +
                 ", numero=" + numero +
                 ", localidad='" + localidad + '\'' +
                 ", provincia='" + provincia + '\'' +
                 '}';
     }
-
- */
 }

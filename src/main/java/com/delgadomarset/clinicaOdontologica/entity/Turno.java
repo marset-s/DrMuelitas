@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import javax.validation.constraints.FutureOrPresent;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "TURNOS")
@@ -30,6 +28,7 @@ public class Turno {
 
     public Turno() {
     }
+
     public Turno(LocalDateTime fechaHora, Odontologo odontologo, Paciente paciente) {
         this.fechaHora = fechaHora;
         this.odontologo = odontologo;

@@ -1,12 +1,13 @@
 package com.delgadomarset.clinicaOdontologica.entity;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import java.time.LocalDate;
 import jakarta.persistence.*;
+
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 
 @Entity
@@ -35,7 +36,6 @@ public class Paciente {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "domicilio_id")
     private Domicilio domicilio;
-
 
 
     public Paciente() {

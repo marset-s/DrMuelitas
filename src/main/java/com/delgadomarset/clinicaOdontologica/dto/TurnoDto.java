@@ -1,61 +1,67 @@
 package com.delgadomarset.clinicaOdontologica.dto;
 
-import com.delgadomarset.clinicaOdontologica.entity.Turno;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TurnoDto {
 
-    private String paciente;
-    private String odontologo;
-    private LocalDateTime fecha;
+    private Long id;
+    private LocalDateTime fechaHora;
+    private String pacienteDto;
+    private String odontologoDto;
+
 
     public TurnoDto() {
     }
 
-    public TurnoDto(String paciente, String odontologo, LocalDateTime fecha) {
-        this.paciente = paciente;
-        this.odontologo = odontologo;
-        this.fecha = fecha;
+    public TurnoDto(Long id, LocalDateTime fechaHora, String pacienteDto, String odontologoDto) {
+        this.id = id;
+        this.fechaHora = fechaHora;
+        this.pacienteDto = pacienteDto;
+        this.odontologoDto = odontologoDto;
     }
 
-    public String getPaciente() {
-        return paciente;
+    public Long getId() {
+        return id;
     }
 
-    public void setPaciente(String paciente) {
-        this.paciente = paciente;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getOdontologo() {
-        return odontologo;
+    public LocalDateTime getFechaHora() {
+        return fechaHora;
     }
 
-    public void setOdontologo(String odontologo) {
-        this.odontologo = odontologo;
+    public void setFechaHora(LocalDateTime fechaHora) {
+        this.fechaHora = fechaHora;
     }
 
-    public LocalDateTime getFecha() {
-        return fecha;
+    public String getPacienteDto() {
+        return pacienteDto;
     }
 
-    public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha;
+    public void setPacienteDto(String pacienteDto) {
+        this.pacienteDto = pacienteDto;
     }
 
-    public static TurnoDto fromTurno(Turno turno){
-        String paciente = turno.getPaciente().getNombre() + " " + turno.getPaciente().getApellido();
-        String odontologo = turno.getOdontologo().getNombre()+ " " + turno.getOdontologo().getApellido();
-        return new TurnoDto(paciente, odontologo, turno.getFechaHora());
+    public String getOdontologoDto() {
+        return odontologoDto;
+    }
+
+    public void setOdontologoDto(String odontologoDto) {
+        this.odontologoDto = odontologoDto;
     }
 
     @Override
     public String toString() {
         return "TurnoDto{" +
-                "paciente='" + paciente + '\'' +
-                ", odontologo='" + odontologo + '\'' +
-                ", fecha=" + fecha +
+                "id=" + id +
+                ", fechaHora=" + fechaHora +
+                ", pacienteDto='" + pacienteDto + '\'' +
+                ", odontologoDto='" + odontologoDto + '\'' +
                 '}';
     }
 }

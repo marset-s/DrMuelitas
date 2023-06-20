@@ -10,7 +10,7 @@ import org.springframework.data.annotation.Id;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name ="ODONTOLOGOS")
+@Table(name = "ODONTOLOGOS")
 public class Odontologo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,6 @@ public class Odontologo {
     public Long getId() {
         return id;
     }
-
 
 
     public String getMatricula() {

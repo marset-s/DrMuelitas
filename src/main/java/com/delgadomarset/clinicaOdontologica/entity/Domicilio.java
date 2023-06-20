@@ -1,5 +1,7 @@
 package com.delgadomarset.clinicaOdontologica.entity;
+
 import jakarta.persistence.*;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -26,7 +28,6 @@ public class Domicilio {
 
     public Domicilio() {
     }
-
 
 
     public Domicilio(String calle, int numero, String localidad, String provincia) {

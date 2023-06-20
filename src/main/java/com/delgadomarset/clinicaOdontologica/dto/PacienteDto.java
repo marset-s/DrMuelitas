@@ -28,6 +28,17 @@ public class PacienteDto {
         this.domicilioDto = domicilioDto;
     }
 
+    public static PacienteDto fromPaciente(Paciente paciente) {
+        return new PacienteDto(
+                paciente.getId(),
+                paciente.getNombre(),
+                paciente.getApellido(),
+                paciente.getDni(),
+                paciente.getFechaIngreso(),
+                DomicilioDto.fromDomicilio(paciente.getDomicilio())
+        );
+    }
+
     public Long getId() {
         return id;
     }
@@ -76,20 +87,16 @@ public class PacienteDto {
         this.apellido = apellido;
     }
 
-/*
-    public static PacienteDto fromPaciente(Paciente paciente){
-        String nombre = "Paciente: " + paciente.getNombre();
-        String apellido = "Apellido " + paciente.getApellido();
-        return new PacienteDto(nombre, apellido);
-    }
 
     @Override
     public String toString() {
         return "PacienteDto{" +
-                "nombre='" + nombre + '\'' +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
+                ", dni='" + dni + '\'' +
+                ", fechaIngreso=" + fechaIngreso +
+                ", domicilioDto=" + domicilioDto +
                 '}';
     }
-
- */
 }
