@@ -11,73 +11,63 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/odontologos")
 public class OdontologoController {
 
     private OdontologoService odontologoService;
 
-    //private ObjectMapper objectMapper;
 
     @Autowired
     public OdontologoController(OdontologoService odontologoService, ObjectMapper objectMapper) {
         this.odontologoService = odontologoService;
-        //this.objectMapper = objectMapper;
+
     }
 
 
-      /*@GetMapping("/index")
-    public String buscarOdontologo(Model model, @RequestParam("id") int id) {
-        Odontologo odontologo = odontologoService.buscarOdontologoPorId(id);
-
-        //agregar los atributos del objeto al modelo que mostraremos en la vista
-        model.addAttribute("matricula", odontologo.getMatricula());
-        return "index";
-    }*/
-
     //GET
     @GetMapping
-    public List<OdontologoDto> listarOdontologos(){
+    public List<OdontologoDto> listarOdontologos() {
         return odontologoService.listarOdontologos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OdontologoDto> buscarOdontologoPorId(@PathVariable int id){
-        ResponseEntity<OdontologoDto> respuesta;
+    public ResponseEntity<OdontologoDto> buscarOdontologoPorId(@PathVariable Long id) {
+        ResponseEntity<OdontologoDto> response = ResponseEntity.badRequest().build();
         OdontologoDto odontologoDto = odontologoService.buscarOdontologoPorId(id);
-        if(odontologoDto != null) respuesta = new ResponseEntity<>(odontologoDto, null, HttpStatus.CREATED);
-        else respuesta = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        return respuesta;
-        //objectMapper.convertValue(odontologoIdao.buscarPorId(id), OdontologoDto.class);
+        if (odontologoDto != null) response = ResponseEntity.ok(odontologoDto);
+        return response;
     }
 
     //POST
     @PostMapping("/registrar")
-    public ResponseEntity<OdontologoDto> registrarOdontologo(@RequestBody Odontologo odontologo){
-        ResponseEntity<OdontologoDto> respuesta;
+    public ResponseEntity<OdontologoDto> registrarOdontologo(@RequestBody Odontologo odontologo) {
+        ResponseEntity<OdontologoDto> response = ResponseEntity.badRequest().build();
         OdontologoDto odontologoDto = odontologoService.registrarOdontologo(odontologo);
-        if(odontologoDto != null) respuesta = new ResponseEntity<>(odontologoDto, null, HttpStatus.CREATED);
-        else respuesta = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        return respuesta;
+        if (odontologoDto != null) response = ResponseEntity.status(HttpStatus.CREATED).body(odontologoDto);
+        return response;
     }
 
     //PUT
     @PutMapping("/actualizar")
-    public ResponseEntity<OdontologoDto>  actualizarOdontologo(@RequestBody Odontologo odontologo){
-        ResponseEntity<OdontologoDto> respuesta;
+    public ResponseEntity<OdontologoDto> actualizarOdontologo(@RequestBody Odontologo odontologo) {
+        ResponseEntity<OdontologoDto> response = ResponseEntity.badRequest().build();
         OdontologoDto odontologoDto = odontologoService.actualizarOdontologo(odontologo);
-        if(odontologoDto != null) respuesta = new ResponseEntity<>(odontologoDto, null, HttpStatus.CREATED);
-        else respuesta = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        return respuesta;
+        if (odontologoDto != null) response = ResponseEntity.ok(odontologoDto);
+        return response;
     }
 
     //DELETE
     @DeleteMapping("/eliminar/{id}")
-    public void eliminarOdontologo(@PathVariable int id){
-        odontologoService.eliminarOdontologo(id);
+    public ResponseEntity<?> eliminarOdontologo(@PathVariable Long id) {
+        ResponseEntity<?> response = ResponseEntity.notFound().build();
+        if (buscarOdontologoPorId(id).getStatusCode().is2xxSuccessful()) {
+            odontologoService.eliminarOdontologo(id);
+            response = ResponseEntity.ok().build();
+        }
+        return response;
     }
-
-
 
 
 }

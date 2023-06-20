@@ -54,7 +54,7 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public TurnoDto buscarPorId(Long id) {
+    public TurnoDto buscarTurnoPorId(Long id) {
         Turno turnoBuscado = turnoRepository.findById(id).orElse(null);
         TurnoDto turnoDto = null;
         if (turnoBuscado != null) {
@@ -81,7 +81,7 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public void elimnarTurno(Long id) {
+    public void eliminarTurno(Long id) {
         if (turnoRepository.existsById(id))
             turnoRepository.deleteById(id);
         LOGGER.info("Se ha eliminado el turno con ID: {}", id);

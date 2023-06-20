@@ -2,16 +2,15 @@ package com.delgadomarset.clinicaOdontologica.controller;
 
 
 import com.delgadomarset.clinicaOdontologica.dto.PacienteDto;
-
 import com.delgadomarset.clinicaOdontologica.entity.Paciente;
 import com.delgadomarset.clinicaOdontologica.service.IPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/pacientes")
@@ -24,58 +23,49 @@ public class PacienteController {
     }
 
     //GET
-    /*
-    @GetMapping("/{dni}")
-    public ResponseEntity<PacienteDto> buscarPacientePorDni(@PathVariable String dni){
-        ResponseEntity<PacienteDto> respuesta;
-        PacienteDto pacienteDto = pacienteService.buscarPacientePorDni(dni);
-        if(pacienteDto != null) respuesta = new ResponseEntity<>(pacienteDto, null, HttpStatus.CREATED);
-        else respuesta =  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        return respuesta;
-    }
-
-     */
-
-    //GET
     @GetMapping("/{id}")
-    public ResponseEntity<PacienteDto> buscarPacientePorId(@PathVariable Long id){
-        ResponseEntity<PacienteDto> respuesta;
+    public ResponseEntity<PacienteDto> buscarPacientePorId(@PathVariable Long id) {
+        ResponseEntity<PacienteDto> response = ResponseEntity.badRequest().build();
         PacienteDto pacienteDto = pacienteService.buscarPacientePorId(id);
-        if(pacienteDto != null) respuesta = new ResponseEntity<>(pacienteDto, null, HttpStatus.CREATED);
-        else respuesta =  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        return respuesta;
+        if (pacienteDto != null) response = ResponseEntity.ok(pacienteDto);
+        return response;
     }
 
     @GetMapping
-    public List<PacienteDto> listarPacientes(){
+    public List<PacienteDto> listarPacientes() {
         return pacienteService.listarPacientes();
     }
 
     //POST
     @PostMapping("/registrar")
-    public ResponseEntity<PacienteDto> guardarPaciente(@RequestBody Paciente paciente){
-        ResponseEntity<PacienteDto> respuesta;
-        PacienteDto pacienteDto = pacienteService.guardarPaciente(paciente);
-        if(pacienteDto != null) respuesta = new ResponseEntity<>(pacienteDto, null, HttpStatus.CREATED);
-        else respuesta = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        return respuesta;
+    public ResponseEntity<PacienteDto> guardarPaciente(@RequestBody Paciente paciente) {
+        ResponseEntity<PacienteDto> response = ResponseEntity.badRequest().build();
+        PacienteDto pacienteDto = pacienteService.registrarPaciente(paciente);
+        if (pacienteDto != null) response = ResponseEntity.status(HttpStatus.CREATED).body(pacienteDto);
+        return response;
     }
 
     //PUT
     @PutMapping("/actualizar")
-    public ResponseEntity<PacienteDto> actualizarPaciente(@RequestBody Paciente paciente){
-        ResponseEntity<PacienteDto> respuesta;
+    public ResponseEntity<PacienteDto> actualizarPaciente(@RequestBody Paciente paciente) {
+        ResponseEntity<PacienteDto> response = ResponseEntity.badRequest().build();
         PacienteDto pacienteDto = pacienteService.actualizarPaciente(paciente);
-        if(pacienteDto != null) respuesta = new ResponseEntity<>(pacienteDto, null, HttpStatus.OK);
-        else respuesta = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        return respuesta;
+        if (pacienteDto != null) response = ResponseEntity.ok(pacienteDto);
+        return response;
     }
 
 
     //DELETE
     @DeleteMapping("eliminar/{id}")
-    public void eliminarPaciente(@PathVariable Long id){
-        pacienteService.eliminarPaciente(id);
+    public ResponseEntity<?> eliminarPaciente(@PathVariable Long id) {
+        ResponseEntity<?> response = ResponseEntity.notFound().build();
+        if (buscarPacientePorId(id).getStatusCode().is2xxSuccessful()) {
+            pacienteService.eliminarPaciente(id);
+            response = ResponseEntity.ok().build();
+        }
+        return response;
     }
 
 }
+
+

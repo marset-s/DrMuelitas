@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/turnos")
 public class TurnoController {
@@ -24,46 +25,45 @@ public class TurnoController {
 
     //GET
     @GetMapping("/{id}")
-    public ResponseEntity<TurnoDto> buscarTurnoPorId(@PathVariable int id){
-        ResponseEntity<TurnoDto> respuesta;
-        TurnoDto turnoDto = turnoService.buscarPorId(id);
-        if(turnoDto != null) respuesta = new ResponseEntity<>(turnoDto, null, HttpStatus.CREATED);
-        else respuesta =  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        return respuesta;
+    public ResponseEntity<TurnoDto> buscarTurnoPorId(@PathVariable Long id) {
+        ResponseEntity<TurnoDto> response = ResponseEntity.badRequest().build();
+        TurnoDto turnoDto = turnoService.buscarTurnoPorId(id);
+        if (turnoDto != null) response = ResponseEntity.ok(turnoDto);
+        return response;
     }
 
     @GetMapping
-    public List<TurnoDto> listarTurnos(){
-        return  turnoService.listarTodos();
+    public List<TurnoDto> listarTurnos() {
+        return turnoService.listarTodos();
     }
 
     //POST
     @PostMapping("/registrar")
-    public ResponseEntity<TurnoDto> guardarTurno(@RequestBody Turno turno){
-        ResponseEntity<TurnoDto> respuesta;
-        TurnoDto turnoDto = turnoService.guardarTurno(turno);
-        if(turnoDto != null) respuesta = new ResponseEntity<>(turnoDto, null, HttpStatus.CREATED);
-        else respuesta =  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        return respuesta;
+    public ResponseEntity<TurnoDto> guardarTurno(@RequestBody Turno turno) {
+        ResponseEntity<TurnoDto> response = ResponseEntity.badRequest().build();
+        TurnoDto turnoDto = turnoService.registrarTurno(turno);
+        if (turnoDto != null) response = ResponseEntity.status(HttpStatus.CREATED).body(turnoDto);
+        return response;
     }
 
     //DELETE
     @DeleteMapping("/eliminar/{id}")
-    public void eliminarTurno(@PathVariable int id){
-        turnoService.elimnarTurno(id);
+    public ResponseEntity<?> eliminarTurno(@PathVariable Long id) {
+        ResponseEntity<?> response = ResponseEntity.notFound().build();
+        if (buscarTurnoPorId(id).getStatusCode().is2xxSuccessful()) {
+            turnoService.eliminarTurno(id);
+            response = ResponseEntity.ok().build();
+        }
+        return response;
     }
 
     //PUT
     @PutMapping("/actualizar")
-    public ResponseEntity<TurnoDto> actualizarTurno(@RequestBody Turno turno){
-        ResponseEntity<TurnoDto> respuesta;
+    public ResponseEntity<TurnoDto> actualizarTurno(@RequestBody Turno turno) {
+        ResponseEntity<TurnoDto> response = ResponseEntity.badRequest().build();
         TurnoDto turnoDto = turnoService.actualizarTurno(turno);
-        if(turnoDto != null) respuesta = new ResponseEntity<>(turnoDto, null, HttpStatus.OK);
-        else respuesta =  ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        return respuesta;
+        if (turnoDto != null) response = ResponseEntity.ok(turnoDto);
+        return response;
     }
 }
 
-//ObetctMapper.conevrtValue -> recibe dos paramentros: 1- encuentra el odontologo, en el segundo ignora el atributo ques e le indique..
-
-//return objectMapper.convertValue()

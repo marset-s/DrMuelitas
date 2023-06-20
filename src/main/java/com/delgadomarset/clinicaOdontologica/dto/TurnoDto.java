@@ -9,14 +9,14 @@ public class TurnoDto {
 
     private Long id;
     private LocalDateTime fechaHora;
-    private String pacienteDto;
-    private String odontologoDto;
+    private PacienteDto pacienteDto;
+    private OdontologoDto odontologoDto;
 
 
     public TurnoDto() {
     }
 
-    public TurnoDto(Long id, LocalDateTime fechaHora, String pacienteDto, String odontologoDto) {
+    public TurnoDto(Long id, LocalDateTime fechaHora, PacienteDto pacienteDto, OdontologoDto odontologoDto) {
         this.id = id;
         this.fechaHora = fechaHora;
         this.pacienteDto = pacienteDto;
@@ -39,19 +39,19 @@ public class TurnoDto {
         this.fechaHora = fechaHora;
     }
 
-    public String getPacienteDto() {
+    public PacienteDto getPacienteDto() {
         return pacienteDto;
     }
 
-    public void setPacienteDto(String pacienteDto) {
+    public void setPacienteDto(PacienteDto pacienteDto) {
         this.pacienteDto = pacienteDto;
     }
 
-    public String getOdontologoDto() {
+    public OdontologoDto getOdontologoDto() {
         return odontologoDto;
     }
 
-    public void setOdontologoDto(String odontologoDto) {
+    public void setOdontologoDto(OdontologoDto odontologoDto) {
         this.odontologoDto = odontologoDto;
     }
 
