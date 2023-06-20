@@ -6,7 +6,7 @@ import com.delgadomarset.clinicaOdontologica.dto.DomicilioDto;
 import com.delgadomarset.clinicaOdontologica.dto.PacienteDto;
 
 import com.delgadomarset.clinicaOdontologica.entity.Domicilio;
-import com.delgadomarset.clinicaOdontologica.repository.IDao;
+
 import com.delgadomarset.clinicaOdontologica.entity.Paciente;
 import com.delgadomarset.clinicaOdontologica.repository.PacienteReposirtory;
 import com.delgadomarset.clinicaOdontologica.service.IPacienteService;
