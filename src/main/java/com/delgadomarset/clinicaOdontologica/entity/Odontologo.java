@@ -4,10 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "ODONTOLOGOS")
