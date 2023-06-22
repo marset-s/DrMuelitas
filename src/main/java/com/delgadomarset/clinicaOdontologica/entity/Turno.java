@@ -2,8 +2,9 @@ package com.delgadomarset.clinicaOdontologica.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 
-import javax.validation.constraints.FutureOrPresent;
+
 import java.time.LocalDateTime;
 
 @Entity

@@ -3,6 +3,7 @@ package com.delgadomarset.clinicaOdontologica.controller;
 
 import com.delgadomarset.clinicaOdontologica.dto.PacienteDto;
 import com.delgadomarset.clinicaOdontologica.entity.Paciente;
+import com.delgadomarset.clinicaOdontologica.exception.ResourceNotFoundException;
 import com.delgadomarset.clinicaOdontologica.service.IPacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,13 +58,9 @@ public class PacienteController {
 
     //DELETE
     @DeleteMapping("eliminar/{id}")
-    public ResponseEntity<?> eliminarPaciente(@PathVariable Long id) {
-        ResponseEntity<?> response = ResponseEntity.notFound().build();
-        if (buscarPacientePorId(id).getStatusCode().is2xxSuccessful()) {
-            pacienteService.eliminarPaciente(id);
-            response = ResponseEntity.ok().build();
-        }
-        return response;
+    public ResponseEntity<?> eliminarPaciente(@PathVariable Long id) throws ResourceNotFoundException {
+        pacienteService.eliminarPaciente(id);
+        return ResponseEntity.ok("Se ha eliminado al paciente");
     }
 
 }

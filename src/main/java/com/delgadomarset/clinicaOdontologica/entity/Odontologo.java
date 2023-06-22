@@ -1,10 +1,13 @@
 package com.delgadomarset.clinicaOdontologica.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "ODONTOLOGOS")
@@ -13,13 +16,16 @@ public class Odontologo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Size(max = 15)
+    @Pattern(regexp = "^\\d+$")
     private String matricula;
     @Size(max = 50, message = "El nombre puede tener hasta 50 caracteres")
-    @NotNull
+    @NotNull(message = "El nombre no puede ser nulo")
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
 
     @Size(max = 50, message = "El apellido puede tener hasta 50 caracteres")
-    @NotNull
+    @NotNull(message = "El apellido no puede ser nulo")
+    @NotBlank(message = "El apellido no puede estar vacío")
     private String apellido;
 
     public Odontologo() {

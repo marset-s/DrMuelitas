@@ -4,7 +4,8 @@ package com.delgadomarset.clinicaOdontologica.service.impl;
 import com.delgadomarset.clinicaOdontologica.dto.DomicilioDto;
 import com.delgadomarset.clinicaOdontologica.dto.PacienteDto;
 import com.delgadomarset.clinicaOdontologica.entity.Paciente;
-import com.delgadomarset.clinicaOdontologica.repository.PacienteReposirtory;
+import com.delgadomarset.clinicaOdontologica.exception.ResourceNotFoundException;
+import com.delgadomarset.clinicaOdontologica.repository.PacienteRepository;
 import com.delgadomarset.clinicaOdontologica.service.IPacienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -20,11 +21,11 @@ public class PacienteService implements IPacienteService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PacienteService.class);
 
-    private final PacienteReposirtory pacienteRepository;
+    private final PacienteRepository pacienteRepository;
     private ObjectMapper objectMapper;
 
     @Autowired
-    public PacienteService(PacienteReposirtory pacienteRepository, ObjectMapper objectMapper) {
+    public PacienteService(PacienteRepository pacienteRepository, ObjectMapper objectMapper) {
         this.pacienteRepository = pacienteRepository;
         this.objectMapper = objectMapper;
     }
@@ -84,10 +85,15 @@ public class PacienteService implements IPacienteService {
     }
 
     @Override
-    public void eliminarPaciente(Long id) {
-        if (pacienteRepository.existsById(id))
+    public void eliminarPaciente(Long id) throws ResourceNotFoundException{
+        if (buscarPacientePorId(id) != null){
             pacienteRepository.deleteById(id);
-        LOGGER.warn("Se ha eliminado el paciente con id {}", id);
+            LOGGER.warn("Se ha eliminado al paciente con ID: {}", id);
+        }
+        else{
+            LOGGER.warn("El paciente con ID: " + id + "no se encuentra en la base de datos");
+            throw new ResourceNotFoundException("El paciente con ID: " + id + "no se encuentra en la base de datos");
+        }
     }
 
 }

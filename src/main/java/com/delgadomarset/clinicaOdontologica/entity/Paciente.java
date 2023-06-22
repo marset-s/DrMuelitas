@@ -2,11 +2,9 @@ package com.delgadomarset.clinicaOdontologica.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 
@@ -19,10 +17,12 @@ public class Paciente {
     private Long id;
 
     @Size(max = 50, message = "El nombre debe tener hasta 50 caracteres")
-    @NotNull
+    @NotNull(message = "El nombre no puede ser nulo")
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
     @Size(max = 50, message = "El apellido debe tener hasta 50 caracteres")
-    @NotNull
+    @NotNull(message = "El apellido no puede ser nulo")
+    @NotBlank(message = "El apellido no puede estar vacío")
     private String apellido;
 
     @Pattern(regexp = "[/d]")

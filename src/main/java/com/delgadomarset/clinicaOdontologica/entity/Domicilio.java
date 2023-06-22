@@ -1,9 +1,10 @@
 package com.delgadomarset.clinicaOdontologica.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "DOMICILIOS")
@@ -14,16 +15,19 @@ public class Domicilio {
     private Long id;
 
     @Size(max = 50, message = "El nombre de la calle debe tener hasta 50 caracteres")
-    @NotNull
+    @NotNull(message = "El nombre de la calle no puede ser nulo")
+    @NotBlank(message = "El nombre de la calle no puede estar vacío")
     private String calle;
     private int numero;
 
     @Size(max = 50, message = "El nombre de la localidad debe tener hasta 50 caracteres")
-    @NotNull
+    @NotNull(message = "El nombre de la localidad no puede ser nulo")
+    @NotBlank(message = "El nombre de la localidad no puede estar vacío")
     private String localidad;
 
     @Size(max = 50, message = "El nombre de la provincia debe tener hasta 50 caracteres")
-    @NotNull
+    @NotNull(message = "El nombre de la provincia no puede ser nulo")
+    @NotBlank(message = "El nombre de la provincia no puede estar vacío")
     private String provincia;
 
     public Domicilio() {

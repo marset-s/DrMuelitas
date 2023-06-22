@@ -3,7 +3,11 @@ package com.delgadomarset.clinicaOdontologica.service.impl;
 import com.delgadomarset.clinicaOdontologica.dto.OdontologoDto;
 import com.delgadomarset.clinicaOdontologica.dto.PacienteDto;
 import com.delgadomarset.clinicaOdontologica.dto.TurnoDto;
+import com.delgadomarset.clinicaOdontologica.entity.Odontologo;
+import com.delgadomarset.clinicaOdontologica.entity.Paciente;
 import com.delgadomarset.clinicaOdontologica.entity.Turno;
+import com.delgadomarset.clinicaOdontologica.exception.BadRequestException;
+import com.delgadomarset.clinicaOdontologica.exception.ResourceNotFoundException;
 import com.delgadomarset.clinicaOdontologica.repository.TurnoRepository;
 import com.delgadomarset.clinicaOdontologica.service.ITurnoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,19 +33,34 @@ public class TurnoService implements ITurnoService {
 
 
     @Override
-    public TurnoDto registrarTurno(Turno turno) {
+    public TurnoDto registrarTurno(Turno turno) throws BadRequestException {
+
+        // Verificar si el paciente existe en la base de datos
+        Paciente paciente = turno.getPaciente();
+        if (paciente == null) {
+            LOGGER.error("El paciente no se encuentra en nuestra base de datos");
+            throw new BadRequestException("El paciente no se encuentra en nuestra base de datos");
+        }
+
+        // Verificar si el odontólogo existe en la base de datos
+        Odontologo odontologo = turno.getOdontologo();
+        if (odontologo == null) {
+            LOGGER.error("El odontólogo no se encuentra en nuestra base de datos");
+            throw new BadRequestException("El odontólogo no se encuentra en nuestra base de datos");
+        }
+
         TurnoDto turnoDto = objectMapper.convertValue(turnoRepository.save(turno), TurnoDto.class);
         turnoDto.setPacienteDto(PacienteDto.fromPaciente(turno.getPaciente()));
         turnoDto.setOdontologoDto(OdontologoDto.fromOdontologo(turno.getOdontologo()));
-        LOGGER.info("️Se guardó al turno: {}", turnoDto);
+
+        LOGGER.info("Se guardó el turno: {}", turnoDto);
         return turnoDto;
     }
 
     @Override
     public List<TurnoDto> listarTodos() {
-        List<TurnoDto> turnoDtos = turnoRepository
-                .findAll()
-                .stream()
+        List<Turno> turnos = turnoRepository.findAll();
+        List<TurnoDto> turnoDtos = turnos.stream()
                 .map(turno -> {
                     TurnoDto turnoDto = objectMapper.convertValue(turno, TurnoDto.class);
                     turnoDto.setPacienteDto(PacienteDto.fromPaciente(turno.getPaciente()));
@@ -49,7 +68,7 @@ public class TurnoService implements ITurnoService {
                     return turnoDto;
                 })
                 .toList();
-        LOGGER.info("🔢 Listando todos los turnos: {}", turnoDtos);
+        LOGGER.info("Lista de todos los turnos: {}", turnoDtos);
         return turnoDtos;
     }
 
@@ -73,7 +92,7 @@ public class TurnoService implements ITurnoService {
         TurnoDto turnoActualizadoDto = null;
         if (turnoAActualizar != null) {
             turnoAActualizar = turno;
-            turnoActualizadoDto = registrarTurno(turnoAActualizar);
+            turnoActualizadoDto = objectMapper.convertValue(turnoAActualizar, TurnoDto.class);
             LOGGER.warn("El turno con ID {} ha sido actualizado: {}", turnoAActualizar.getId(), turnoActualizadoDto);
         } else
             LOGGER.warn("No es posible actualizar el turno porque no está registrado en la base de datos");
@@ -81,9 +100,13 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public void eliminarTurno(Long id) {
-        if (turnoRepository.existsById(id))
+    public void eliminarTurno(Long id) throws ResourceNotFoundException {
+        if (buscarTurnoPorId(id) != null) {
             turnoRepository.deleteById(id);
-        LOGGER.info("Se ha eliminado el turno con ID: {}", id);
+            LOGGER.warn("Se ha eliminado el turno con ID: {}", id);
+        } else {
+            LOGGER.warn("El turno con ID: " + id + "no se encuentra en la base de datos");
+            throw new ResourceNotFoundException("El turno con ID: " + id + "no se encuentra en la base de datos");
+        }
     }
 }

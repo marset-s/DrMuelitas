@@ -2,6 +2,8 @@ package com.delgadomarset.clinicaOdontologica.controller;
 
 import com.delgadomarset.clinicaOdontologica.dto.TurnoDto;
 import com.delgadomarset.clinicaOdontologica.entity.Turno;
+import com.delgadomarset.clinicaOdontologica.exception.BadRequestException;
+import com.delgadomarset.clinicaOdontologica.exception.ResourceNotFoundException;
 import com.delgadomarset.clinicaOdontologica.service.ITurnoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,22 +41,19 @@ public class TurnoController {
 
     //POST
     @PostMapping("/registrar")
-    public ResponseEntity<TurnoDto> guardarTurno(@RequestBody Turno turno) {
-        ResponseEntity<TurnoDto> response = ResponseEntity.badRequest().build();
+    public ResponseEntity<TurnoDto> guardarTurno(@RequestBody Turno turno) throws BadRequestException {
+        ResponseEntity<TurnoDto> respuesta;
         TurnoDto turnoDto = turnoService.registrarTurno(turno);
-        if (turnoDto != null) response = ResponseEntity.status(HttpStatus.CREATED).body(turnoDto);
-        return response;
+        if (turnoDto != null) respuesta = new ResponseEntity<>(turnoDto, null, HttpStatus.CREATED);
+        else respuesta = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return respuesta;
     }
 
     //DELETE
     @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<?> eliminarTurno(@PathVariable Long id) {
-        ResponseEntity<?> response = ResponseEntity.notFound().build();
-        if (buscarTurnoPorId(id).getStatusCode().is2xxSuccessful()) {
-            turnoService.eliminarTurno(id);
-            response = ResponseEntity.ok().build();
-        }
-        return response;
+    public ResponseEntity<?> eliminarTurno(@PathVariable Long id) throws ResourceNotFoundException {
+        turnoService.eliminarTurno(id);
+        return ResponseEntity.ok("Se ha eliminado al turno");
     }
 
     //PUT

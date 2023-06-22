@@ -3,6 +3,7 @@ package com.delgadomarset.clinicaOdontologica.service.impl;
 
 import com.delgadomarset.clinicaOdontologica.dto.OdontologoDto;
 import com.delgadomarset.clinicaOdontologica.entity.Odontologo;
+import com.delgadomarset.clinicaOdontologica.exception.ResourceNotFoundException;
 import com.delgadomarset.clinicaOdontologica.repository.OdontologoRepository;
 import com.delgadomarset.clinicaOdontologica.service.IOdontologoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,9 +72,14 @@ public class OdontologoService implements IOdontologoService {
     }
 
     @Override
-    public void eliminarOdontologo(Long id) {
-        if (odontologoRepository.existsById(id))
+    public void eliminarOdontologo(Long id) throws ResourceNotFoundException {
+        if (buscarOdontologoPorId(id) != null){
             odontologoRepository.deleteById(id);
-        LOGGER.info("Se ha eliminado al odontólogo con ID: {}", id);
+            LOGGER.warn("Se ha eliminado al odontólogo con ID: {}", id);
+        }
+        else{
+            LOGGER.warn("El odontólogo con ID: " + id + " no se encuentra en la base de datos");
+            throw new ResourceNotFoundException("El odontólogo con ID: " + id + " no se encuentra en la base de datos");
+        }
     }
 }
