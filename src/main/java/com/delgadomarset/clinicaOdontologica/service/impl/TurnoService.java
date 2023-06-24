@@ -73,7 +73,7 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public TurnoDto buscarTurnoPorId(Long id) {
+    public TurnoDto buscarTurnoPorId(Long id) throws ResourceNotFoundException {
         Turno turnoBuscado = turnoRepository.findById(id).orElse(null);
         TurnoDto turnoDto = null;
         if (turnoBuscado != null) {
@@ -81,21 +81,25 @@ public class TurnoService implements ITurnoService {
             turnoDto.setPacienteDto(PacienteDto.fromPaciente(turnoBuscado.getPaciente()));
             turnoDto.setOdontologoDto(OdontologoDto.fromOdontologo(turnoBuscado.getOdontologo()));
             LOGGER.info("Se ha encontrado al turno con ID {}: {}", id, turnoDto);
-        } else
+        } else {
             LOGGER.info("El turno con ID {} no está registrado en la base de datos", id);
+            throw new ResourceNotFoundException("El turno igresado no existe en la base de datos");
+        }
         return turnoDto;
     }
 
     @Override
-    public TurnoDto actualizarTurno(Turno turno) {
+    public TurnoDto actualizarTurno(Turno turno) throws BadRequestException {
         Turno turnoAActualizar = turnoRepository.findById(turno.getId()).orElse(null);
         TurnoDto turnoActualizadoDto = null;
         if (turnoAActualizar != null) {
             turnoAActualizar = turno;
             turnoActualizadoDto = objectMapper.convertValue(turnoAActualizar, TurnoDto.class);
             LOGGER.warn("El turno con ID {} ha sido actualizado: {}", turnoAActualizar.getId(), turnoActualizadoDto);
-        } else
+        } else {
             LOGGER.warn("No es posible actualizar el turno porque no está registrado en la base de datos");
+            throw new BadRequestException("El turno no existe en la base de datos");
+        }
         return turnoActualizadoDto;
     }
 

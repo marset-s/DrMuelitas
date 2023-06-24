@@ -4,6 +4,7 @@ package com.delgadomarset.clinicaOdontologica.service.impl;
 import com.delgadomarset.clinicaOdontologica.dto.DomicilioDto;
 import com.delgadomarset.clinicaOdontologica.dto.PacienteDto;
 import com.delgadomarset.clinicaOdontologica.entity.Paciente;
+import com.delgadomarset.clinicaOdontologica.exception.BadRequestException;
 import com.delgadomarset.clinicaOdontologica.exception.ResourceNotFoundException;
 import com.delgadomarset.clinicaOdontologica.repository.PacienteRepository;
 import com.delgadomarset.clinicaOdontologica.service.IPacienteService;
@@ -48,7 +49,7 @@ public class PacienteService implements IPacienteService {
 
 
     @Override
-    public PacienteDto buscarPacientePorId(Long id) {
+    public PacienteDto buscarPacientePorId(Long id) throws ResourceNotFoundException {
         Paciente pacienteBuscado = pacienteRepository.findById(id).orElse(null);
         PacienteDto pacienteDto = null;
         if (pacienteBuscado != null) {
@@ -56,44 +57,53 @@ public class PacienteService implements IPacienteService {
             pacienteDto.setDomicilioDto(DomicilioDto.fromDomicilio(pacienteBuscado.getDomicilio()));
             LOGGER.info("Paciente encontrado: {}", pacienteDto);
 
-        } else LOGGER.info("El id no se encuentra registrado en la base de datos");
+        } else {
+            LOGGER.info("El id no se encuentra registrado en la base de datos");
+            throw new ResourceNotFoundException("El paciente no existe en la base datos");
+        }
 
         return pacienteDto;
     }
 
     @Override
-    public PacienteDto registrarPaciente(Paciente paciente) {
+    public PacienteDto registrarPaciente(Paciente paciente) throws BadRequestException {
+        if (paciente.getDomicilio() == null) {
+            throw new BadRequestException("El paciente no tiene un domicilio registrado");
+        }
+
         PacienteDto pacienteDto = objectMapper.convertValue(pacienteRepository.save(paciente), PacienteDto.class);
         pacienteDto.setDomicilioDto(DomicilioDto.fromDomicilio(paciente.getDomicilio()));
-        LOGGER.info("Nuevo paciente registrado con exito: {}", pacienteDto);
+
+        LOGGER.info("Nuevo paciente registrado con éxito: {}", pacienteDto);
+
         return pacienteDto;
     }
 
 
     @Override
-    public PacienteDto actualizarPaciente(Paciente paciente) {
+    public PacienteDto actualizarPaciente(Paciente paciente) throws BadRequestException {
         Paciente pacienteAActualizar = pacienteRepository.findById(paciente.getId()).orElse(null);
         PacienteDto pacienteActualizadoDto = null;
         if (pacienteAActualizar != null) {
             pacienteAActualizar = paciente;
             pacienteActualizadoDto = registrarPaciente(pacienteAActualizar);
             LOGGER.warn("El paciente con ID {} ha sido actualizado: {}", pacienteAActualizar.getId(), pacienteActualizadoDto);
-        } else
+        } else {
             LOGGER.warn("No es posible actualizar el paciente porque no está registrado en la base de datos");
-        return pacienteActualizadoDto;
+            throw new BadRequestException("El paciente no existe en la base de datos");
+        }
 
+        return pacienteActualizadoDto;
     }
 
     @Override
-    public void eliminarPaciente(Long id) throws ResourceNotFoundException{
-        if (buscarPacientePorId(id) != null){
+    public void eliminarPaciente(Long id) throws ResourceNotFoundException {
+        if (buscarPacientePorId(id) != null) {
             pacienteRepository.deleteById(id);
             LOGGER.warn("Se ha eliminado al paciente con ID: {}", id);
-        }
-        else{
+        } else {
             LOGGER.warn("El paciente con ID: " + id + "no se encuentra en la base de datos");
-            throw new ResourceNotFoundException("El paciente con ID: " + id + "no se encuentra en la base de datos");
+            throw new ResourceNotFoundException("El paciente con ID: " + id + " no se encuentra en la base de datos");
         }
     }
-
 }

@@ -14,5 +14,4 @@ public class ClinicaOdontologicaApplication {
 		SpringApplication.run(ClinicaOdontologicaApplication.class, args);
 		LOGGER.info("Clinica odontologica is now running ...");
 	}
-
 }

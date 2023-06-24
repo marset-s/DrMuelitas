@@ -20,12 +20,15 @@ public class Paciente {
     @NotNull(message = "El nombre no puede ser nulo")
     @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
+
+
     @Size(max = 50, message = "El apellido debe tener hasta 50 caracteres")
     @NotNull(message = "El apellido no puede ser nulo")
     @NotBlank(message = "El apellido no puede estar vacío")
     private String apellido;
 
-    @Pattern(regexp = "[/d]")
+
+    @Pattern(regexp = "\\d+", message = "El DNI debe contener solo números")
     @Size(max = 12)
     private String dni;
 

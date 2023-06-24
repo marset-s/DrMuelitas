@@ -1,7 +1,6 @@
 package com.delgadomarset.clinicaOdontologica.dto;
 
 import com.delgadomarset.clinicaOdontologica.entity.Domicilio;
-import com.delgadomarset.clinicaOdontologica.entity.Odontologo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -23,6 +22,7 @@ public class DomicilioDto {
         this.localidad = localidad;
         this.provincia = provincia;
     }
+
     public static DomicilioDto fromDomicilio(Domicilio domicilio) {
         return new DomicilioDto(
                 domicilio.getId(),

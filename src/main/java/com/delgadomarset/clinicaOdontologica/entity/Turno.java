@@ -14,9 +14,11 @@ public class Turno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+/*
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-ddTHH:mm:ss")
     @FutureOrPresent
+
+ */
     private LocalDateTime fechaHora;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
