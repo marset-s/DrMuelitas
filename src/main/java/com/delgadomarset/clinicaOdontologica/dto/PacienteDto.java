@@ -14,7 +14,8 @@ public class PacienteDto {
 
     private String dni;
     private LocalDate fechaIngreso;
-    private DomicilioDto domicilioDto;
+    private DomicilioDto domicilio;
+
 
     public PacienteDto() {
     }
@@ -25,7 +26,7 @@ public class PacienteDto {
         this.apellido = apellido;
         this.dni = dni;
         this.fechaIngreso = fechaIngreso;
-        this.domicilioDto = domicilioDto;
+        this.domicilio = domicilioDto;
     }
 
     public static PacienteDto fromPaciente(Paciente paciente) {
@@ -37,6 +38,14 @@ public class PacienteDto {
                 paciente.getFechaIngreso(),
                 DomicilioDto.fromDomicilio(paciente.getDomicilio())
         );
+    }
+
+    public DomicilioDto getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(DomicilioDto domicilio) {
+        this.domicilio = domicilio;
     }
 
     public Long getId() {
@@ -63,13 +72,7 @@ public class PacienteDto {
         this.fechaIngreso = fechaIngreso;
     }
 
-    public DomicilioDto getDomicilioDto() {
-        return domicilioDto;
-    }
 
-    public void setDomicilioDto(DomicilioDto domicilioDto) {
-        this.domicilioDto = domicilioDto;
-    }
 
     public String getNombre() {
         return nombre;
@@ -96,7 +99,7 @@ public class PacienteDto {
                 ", apellido='" + apellido + '\'' +
                 ", dni='" + dni + '\'' +
                 ", fechaIngreso=" + fechaIngreso +
-                ", domicilioDto=" + domicilioDto +
+                ", domicilioDto=" + domicilio +
                 '}';
     }
 }

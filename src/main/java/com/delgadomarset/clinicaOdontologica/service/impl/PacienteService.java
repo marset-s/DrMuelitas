@@ -39,7 +39,7 @@ public class PacienteService implements IPacienteService {
                 .stream()
                 .map(paciente -> {
                     PacienteDto pacienteDto = objectMapper.convertValue(paciente, PacienteDto.class);
-                    pacienteDto.setDomicilioDto(DomicilioDto.fromDomicilio(paciente.getDomicilio()));
+                    pacienteDto.setDomicilio(DomicilioDto.fromDomicilio(paciente.getDomicilio()));
                     return pacienteDto;
                 })
                 .toList();
@@ -54,7 +54,7 @@ public class PacienteService implements IPacienteService {
         PacienteDto pacienteDto = null;
         if (pacienteBuscado != null) {
             pacienteDto = objectMapper.convertValue(pacienteBuscado, PacienteDto.class);
-            pacienteDto.setDomicilioDto(DomicilioDto.fromDomicilio(pacienteBuscado.getDomicilio()));
+            pacienteDto.setDomicilio(DomicilioDto.fromDomicilio(pacienteBuscado.getDomicilio()));
             LOGGER.info("Paciente encontrado: {}", pacienteDto);
 
         } else {
@@ -72,7 +72,7 @@ public class PacienteService implements IPacienteService {
         }
 
         PacienteDto pacienteDto = objectMapper.convertValue(pacienteRepository.save(paciente), PacienteDto.class);
-        pacienteDto.setDomicilioDto(DomicilioDto.fromDomicilio(paciente.getDomicilio()));
+        pacienteDto.setDomicilio(DomicilioDto.fromDomicilio(paciente.getDomicilio()));
 
         LOGGER.info("Nuevo paciente registrado con éxito: {}", pacienteDto);
 

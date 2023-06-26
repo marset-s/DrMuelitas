@@ -9,8 +9,8 @@ public class TurnoDto {
 
     private Long id;
     private LocalDateTime fechaHora;
-    private PacienteDto pacienteDto;
-    private OdontologoDto odontologoDto;
+    private PacienteDto paciente;
+    private OdontologoDto odontologo;
 
 
     public TurnoDto() {
@@ -19,8 +19,8 @@ public class TurnoDto {
     public TurnoDto(Long id, LocalDateTime fechaHora, PacienteDto pacienteDto, OdontologoDto odontologoDto) {
         this.id = id;
         this.fechaHora = fechaHora;
-        this.pacienteDto = pacienteDto;
-        this.odontologoDto = odontologoDto;
+        this.paciente = pacienteDto;
+        this.odontologo = odontologoDto;
     }
 
     public Long getId() {
@@ -39,20 +39,20 @@ public class TurnoDto {
         this.fechaHora = fechaHora;
     }
 
-    public PacienteDto getPacienteDto() {
-        return pacienteDto;
+    public PacienteDto getPaciente() {
+        return paciente;
     }
 
-    public void setPacienteDto(PacienteDto pacienteDto) {
-        this.pacienteDto = pacienteDto;
+    public void setPaciente(PacienteDto paciente) {
+        this.paciente = paciente;
     }
 
-    public OdontologoDto getOdontologoDto() {
-        return odontologoDto;
+    public OdontologoDto getOdontologo() {
+        return odontologo;
     }
 
-    public void setOdontologoDto(OdontologoDto odontologoDto) {
-        this.odontologoDto = odontologoDto;
+    public void setOdontologo(OdontologoDto odontologo) {
+        this.odontologo = odontologo;
     }
 
     @Override
@@ -60,8 +60,8 @@ public class TurnoDto {
         return "TurnoDto{" +
                 "id=" + id +
                 ", fechaHora=" + fechaHora +
-                ", pacienteDto='" + pacienteDto + '\'' +
-                ", odontologoDto='" + odontologoDto + '\'' +
+                ", paciente='" + paciente + '\'' +
+                ", odontologo='" + odontologo + '\'' +
                 '}';
     }
 }

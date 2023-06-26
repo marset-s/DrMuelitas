@@ -50,8 +50,8 @@ public class TurnoService implements ITurnoService {
         }
 
         TurnoDto turnoDto = objectMapper.convertValue(turnoRepository.save(turno), TurnoDto.class);
-        turnoDto.setPacienteDto(PacienteDto.fromPaciente(turno.getPaciente()));
-        turnoDto.setOdontologoDto(OdontologoDto.fromOdontologo(turno.getOdontologo()));
+        turnoDto.setPaciente(PacienteDto.fromPaciente(turno.getPaciente()));
+        turnoDto.setOdontologo(OdontologoDto.fromOdontologo(turno.getOdontologo()));
 
         LOGGER.info("Se guardó el turno: {}", turnoDto);
         return turnoDto;
@@ -63,8 +63,8 @@ public class TurnoService implements ITurnoService {
         List<TurnoDto> turnoDtos = turnos.stream()
                 .map(turno -> {
                     TurnoDto turnoDto = objectMapper.convertValue(turno, TurnoDto.class);
-                    turnoDto.setPacienteDto(PacienteDto.fromPaciente(turno.getPaciente()));
-                    turnoDto.setOdontologoDto(OdontologoDto.fromOdontologo(turno.getOdontologo()));
+                    turnoDto.setPaciente(PacienteDto.fromPaciente(turno.getPaciente()));
+                    turnoDto.setOdontologo(OdontologoDto.fromOdontologo(turno.getOdontologo()));
                     return turnoDto;
                 })
                 .toList();
@@ -78,8 +78,8 @@ public class TurnoService implements ITurnoService {
         TurnoDto turnoDto = null;
         if (turnoBuscado != null) {
             turnoDto = objectMapper.convertValue(turnoBuscado, TurnoDto.class);
-            turnoDto.setPacienteDto(PacienteDto.fromPaciente(turnoBuscado.getPaciente()));
-            turnoDto.setOdontologoDto(OdontologoDto.fromOdontologo(turnoBuscado.getOdontologo()));
+            turnoDto.setPaciente(PacienteDto.fromPaciente(turnoBuscado.getPaciente()));
+            turnoDto.setOdontologo(OdontologoDto.fromOdontologo(turnoBuscado.getOdontologo()));
             LOGGER.info("Se ha encontrado al turno con ID {}: {}", id, turnoDto);
         } else {
             LOGGER.info("El turno con ID {} no está registrado en la base de datos", id);
