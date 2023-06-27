@@ -5,16 +5,16 @@ import com.delgadomarset.clinicaOdontologica.entity.Odontologo;
 import com.delgadomarset.clinicaOdontologica.exception.BadRequestException;
 import com.delgadomarset.clinicaOdontologica.exception.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 class OdontologoServiceTest {
 
     private final OdontologoService odontologoService;
+    private static Odontologo odontologo;
 
     @Autowired
     OdontologoServiceTest(OdontologoService odontologoService) {
@@ -22,35 +22,31 @@ class OdontologoServiceTest {
     }
 
 
-    @BeforeEach
-    public void crearOdontologo() throws BadRequestException {
-        Odontologo odontologo = new Odontologo(
-                "99554877",
+    @BeforeAll
+    public static void crearOdontologo() {
+        odontologo = new Odontologo(
+                "995522222222",
                 "Luciana",
                 "Murga"
         );
+    }
+
+
+    @Test
+    @Order(1)
+    void deberiaRegistrarUnOdontologo() throws ResourceNotFoundException, BadRequestException {
         OdontologoDto odontologoDto = odontologoService.registrarOdontologo(odontologo);
+        Assertions.assertEquals("Luciana", odontologoDto.getNombre());
+        Assertions.assertEquals(1L, (long) odontologoDto.getId());
     }
 
-    @Test
-    void deberiaRegistrarUnOdontologo() throws ResourceNotFoundException {
-        Assertions.assertEquals(odontologoService.buscarOdontologoPorId(1L).getNombre(), "Luciana");
-        Assertions.assertEquals(1L, (long) odontologoService.buscarOdontologoPorId(1L).getId());
-    }
 
     @Test
-    void buscarOdontologoPorId() {
-    }
-
-    @Test
-    void listarOdontologos() {
-    }
-
-    @Test
-    void actualizarOdontologo() throws ResourceNotFoundException, BadRequestException {
+    @Order(2)
+    void deberiaActualizarOdontologo() throws ResourceNotFoundException, BadRequestException {
         OdontologoDto nuevoOdontologo = new OdontologoDto(
                 1L,
-                "32554669",
+                "12312333445553",
                 "Ramona",
                 "Santana"
         );
@@ -61,6 +57,10 @@ class OdontologoServiceTest {
     }
 
     @Test
-    void eliminarOdontologo() {
+    @Order(3)
+    void deberiaLanzarResourceNotFoundException() {
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> odontologoService.buscarOdontologoPorId(2L));
     }
+
+
 }

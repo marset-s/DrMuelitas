@@ -83,7 +83,7 @@ public class OdontologoController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    public ResponseEntity<OdontologoDto> registrarOdontologo(@Valid @RequestBody Odontologo odontologo) throws BadRequestException{
+    public ResponseEntity<OdontologoDto> registrarOdontologo(@Valid @RequestBody Odontologo odontologo) throws BadRequestException {
         ResponseEntity<OdontologoDto> response = ResponseEntity.badRequest().build();
         OdontologoDto odontologoDto = odontologoService.registrarOdontologo(odontologo);
         if (odontologoDto != null) response = ResponseEntity.status(HttpStatus.CREATED).body(odontologoDto);

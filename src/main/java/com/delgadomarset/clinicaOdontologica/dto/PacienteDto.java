@@ -73,7 +73,6 @@ public class PacienteDto {
     }
 
 
-
     public String getNombre() {
         return nombre;
     }

@@ -1,11 +1,12 @@
 package com.delgadomarset.clinicaOdontologica.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-
 import java.time.LocalDate;
+import java.util.Set;
 
 
 @Entity
@@ -18,27 +19,33 @@ public class Paciente {
 
     @Size(max = 50, message = "El nombre debe tener hasta 50 caracteres")
     @NotNull(message = "El nombre no puede ser nulo")
-    @NotBlank(message = "El nombre no puede estar vacío")
+    @NotBlank(message = "El campo de nombre no puede estar vacío")
     private String nombre;
 
 
     @Size(max = 50, message = "El apellido debe tener hasta 50 caracteres")
     @NotNull(message = "El apellido no puede ser nulo")
-    @NotBlank(message = "El apellido no puede estar vacío")
+    @NotBlank(message = "El campo de apellido no puede estar vacío")
     private String apellido;
 
 
     @Pattern(regexp = "\\d+", message = "El DNI debe contener solo números")
     @Size(max = 12)
+    @NotBlank(message = "El campo del dni del paciente no puede estar vacío")
     private String dni;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @FutureOrPresent
+    @FutureOrPresent(message = "La fecha no puede ser anterior al día de hoy")
+    @NotNull(message = "El campo de la fecha de ingreso del paciente no puede estar vacío")
     private LocalDate fechaIngreso;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "domicilio_id")
     private Domicilio domicilio;
+
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Turno> turnos;
 
 
     public Paciente() {
@@ -98,11 +105,5 @@ public class Paciente {
         this.domicilio = domicilio;
     }
 
-    /*
-    @Override
-    public String toString() {
-        return "Id: " + id + " - Nombre: " + nombre + " - Apellido: " + apellido + " - DNI: " + dni + " - Fechas de ingreso: " + fechaIngreso + " - Domicilio: " + domicilio;
-    }
 
-     */
 }

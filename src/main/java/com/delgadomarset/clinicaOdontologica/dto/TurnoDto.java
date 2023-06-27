@@ -1,5 +1,6 @@
 package com.delgadomarset.clinicaOdontologica.dto;
 
+import com.delgadomarset.clinicaOdontologica.entity.Turno;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,14 @@ public class TurnoDto {
         this.odontologo = odontologoDto;
     }
 
+    public static TurnoDto fromTurno(Turno turno) {
+        return new TurnoDto(
+                turno.getId(),
+                turno.getFechaHora(),
+                PacienteDto.fromPaciente(turno.getPaciente()),
+                OdontologoDto.fromOdontologo(turno.getOdontologo())
+        );
+    }
     public Long getId() {
         return id;
     }

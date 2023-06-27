@@ -29,7 +29,7 @@ public class OdontologoService implements IOdontologoService {
 
 
     @Override
-    public OdontologoDto registrarOdontologo(Odontologo odontologo) throws BadRequestException{
+    public OdontologoDto registrarOdontologo(Odontologo odontologo) throws BadRequestException {
         //throw new BadRequestException("No se pudo registar al odontólog");
         OdontologoDto odontologoDto = objectMapper.convertValue(odontologoRepository.save(odontologo), OdontologoDto.class);
         LOGGER.info("Se guardó al odontólogo: {}", odontologoDto);

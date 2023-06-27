@@ -6,7 +6,6 @@ import com.delgadomarset.clinicaOdontologica.dto.PacienteDto;
 import com.delgadomarset.clinicaOdontologica.entity.Paciente;
 import com.delgadomarset.clinicaOdontologica.exception.BadRequestException;
 import com.delgadomarset.clinicaOdontologica.exception.ResourceNotFoundException;
-
 import com.delgadomarset.clinicaOdontologica.service.impl.PacienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,7 +42,7 @@ public class PacienteController {
                     content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<PacienteDto> buscarPacientePorId(@PathVariable Long id) throws ResourceNotFoundException{
+    public ResponseEntity<PacienteDto> buscarPacientePorId(@PathVariable Long id) throws ResourceNotFoundException {
         ResponseEntity<PacienteDto> response = ResponseEntity.badRequest().build();
         try {
             PacienteDto pacienteDto = pacienteService.buscarPacientePorId(id);
@@ -107,7 +106,7 @@ public class PacienteController {
                     content = @Content)
     })
     @PutMapping("/actualizar")
-    public ResponseEntity<PacienteDto> actualizarPaciente(@Valid @RequestBody Paciente paciente) throws BadRequestException{
+    public ResponseEntity<PacienteDto> actualizarPaciente(@Valid @RequestBody Paciente paciente) throws BadRequestException {
         ResponseEntity<PacienteDto> response = ResponseEntity.badRequest().build();
         PacienteDto pacienteDto = pacienteService.actualizarPaciente(paciente);
         if (pacienteDto != null) response = ResponseEntity.ok(pacienteDto);

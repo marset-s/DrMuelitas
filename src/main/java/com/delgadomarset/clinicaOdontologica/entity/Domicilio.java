@@ -18,6 +18,8 @@ public class Domicilio {
     @NotNull(message = "El nombre de la calle no puede ser nulo")
     @NotBlank(message = "El nombre de la calle no puede estar vacío")
     private String calle;
+
+
     private int numero;
 
     @Size(max = 50, message = "El nombre de la localidad debe tener hasta 50 caracteres")

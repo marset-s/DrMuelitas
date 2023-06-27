@@ -43,7 +43,7 @@ public class TurnoController {
                     content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<TurnoDto> buscarTurnoPorId(@PathVariable Long id) throws ResourceNotFoundException{
+    public ResponseEntity<TurnoDto> buscarTurnoPorId(@PathVariable Long id) throws ResourceNotFoundException {
         ResponseEntity<TurnoDto> response = ResponseEntity.badRequest().build();
         TurnoDto turnoDto = turnoService.buscarTurnoPorId(id);
         if (turnoDto != null) response = ResponseEntity.ok(turnoDto);
@@ -79,7 +79,7 @@ public class TurnoController {
                     content = @Content)
     })
     @PostMapping("/registrar")
-    public ResponseEntity<TurnoDto> guardarTurno(@Valid @RequestBody Turno turno) throws BadRequestException {
+    public ResponseEntity<TurnoDto> guardarTurno(@Valid @RequestBody Turno turno) throws BadRequestException, ResourceNotFoundException {
         ResponseEntity<TurnoDto> respuesta;
         TurnoDto turnoDto = turnoService.registrarTurno(turno);
         if (turnoDto != null) respuesta = new ResponseEntity<>(turnoDto, null, HttpStatus.CREATED);
@@ -118,7 +118,7 @@ public class TurnoController {
                     content = @Content)
     })
     @PutMapping("/actualizar")
-    public ResponseEntity<TurnoDto> actualizarTurno(@Valid @RequestBody Turno turno) throws BadRequestException{
+    public ResponseEntity<TurnoDto> actualizarTurno(@Valid @RequestBody Turno turno) throws BadRequestException {
         ResponseEntity<TurnoDto> response = ResponseEntity.badRequest().build();
         TurnoDto turnoDto = turnoService.actualizarTurno(turno);
         if (turnoDto != null) response = ResponseEntity.ok(turnoDto);

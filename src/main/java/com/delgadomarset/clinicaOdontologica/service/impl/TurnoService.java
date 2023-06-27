@@ -3,8 +3,6 @@ package com.delgadomarset.clinicaOdontologica.service.impl;
 import com.delgadomarset.clinicaOdontologica.dto.OdontologoDto;
 import com.delgadomarset.clinicaOdontologica.dto.PacienteDto;
 import com.delgadomarset.clinicaOdontologica.dto.TurnoDto;
-import com.delgadomarset.clinicaOdontologica.entity.Odontologo;
-import com.delgadomarset.clinicaOdontologica.entity.Paciente;
 import com.delgadomarset.clinicaOdontologica.entity.Turno;
 import com.delgadomarset.clinicaOdontologica.exception.BadRequestException;
 import com.delgadomarset.clinicaOdontologica.exception.ResourceNotFoundException;
@@ -23,37 +21,42 @@ public class TurnoService implements ITurnoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TurnoService.class);
     private final TurnoRepository turnoRepository;
+    private final PacienteService pacienteService;
+    private final OdontologoService odontologoService;
     private final ObjectMapper objectMapper;
 
     @Autowired
-    public TurnoService(TurnoRepository turnoRepository, ObjectMapper objectMapper) {
+    public TurnoService(TurnoRepository turnoRepository, PacienteService pacienteService, OdontologoService odontologoService, ObjectMapper objectMapper) {
         this.turnoRepository = turnoRepository;
+        this.pacienteService = pacienteService;
+        this.odontologoService = odontologoService;
         this.objectMapper = objectMapper;
     }
 
 
     @Override
-    public TurnoDto registrarTurno(Turno turno) throws BadRequestException {
+    public TurnoDto registrarTurno(Turno turno) throws BadRequestException, ResourceNotFoundException {
+        TurnoDto turnoDto = null;
+        PacienteDto paciente = pacienteService.buscarPacientePorId(turno.getPaciente().getId());
+        OdontologoDto odontologo = odontologoService.buscarOdontologoPorId(turno.getOdontologo().getId());
 
-        // Verificar si el paciente existe en la base de datos
-        Paciente paciente = turno.getPaciente();
-        if (paciente == null) {
-            LOGGER.error("El paciente no se encuentra en nuestra base de datos");
-            throw new BadRequestException("El paciente no se encuentra en nuestra base de datos");
+        if(paciente == null || odontologo == null) {
+            if(paciente == null && odontologo == null) {
+                LOGGER.error("El paciente y el odontologo no se encuentran en nuestra base de datos");
+                throw new BadRequestException("El paciente no se encuentra en nuestra base de datos");
+            }
+            else if (paciente == null){
+                LOGGER.error("El paciente no se encuentra en nuestra base de datos");
+                throw new BadRequestException("El paciente no se encuentra en nuestra base de datos");
+            } else {
+                LOGGER.error("El odontologo no se encuentra en nuestra base de datos");
+                throw new BadRequestException("El odontologo no se encuentra en nuestra base de datos");
+            }
+
+        } else {
+            turnoDto = TurnoDto.fromTurno(turnoRepository.save(turno));
+            LOGGER.info("Nuevo turno registrado con exito: {}", turnoDto);
         }
-
-        // Verificar si el odontólogo existe en la base de datos
-        Odontologo odontologo = turno.getOdontologo();
-        if (odontologo == null) {
-            LOGGER.error("El odontólogo no se encuentra en nuestra base de datos");
-            throw new BadRequestException("El odontólogo no se encuentra en nuestra base de datos");
-        }
-
-        TurnoDto turnoDto = objectMapper.convertValue(turnoRepository.save(turno), TurnoDto.class);
-        turnoDto.setPaciente(PacienteDto.fromPaciente(turno.getPaciente()));
-        turnoDto.setOdontologo(OdontologoDto.fromOdontologo(turno.getOdontologo()));
-
-        LOGGER.info("Se guardó el turno: {}", turnoDto);
         return turnoDto;
     }
 

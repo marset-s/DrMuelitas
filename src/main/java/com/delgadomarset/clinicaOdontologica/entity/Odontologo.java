@@ -1,12 +1,13 @@
 package com.delgadomarset.clinicaOdontologica.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-
+import java.util.Set;
 
 
 @Entity
@@ -15,18 +16,25 @@ public class Odontologo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Size(max = 15)
+
+    @NotNull(message = "La matricula no puede ser nula")
+    @NotBlank(message = "El campo de matrícula no puede estar vacío")
+    @Size(min = 10, max = 15,  message = "El campo debe tener mínimo 10 caracteres y máximo 15")
     @Pattern(regexp = "^\\d+$")
     private String matricula;
     @Size(max = 50, message = "El nombre puede tener hasta 50 caracteres")
     @NotNull(message = "El nombre no puede ser nulo")
-    @NotBlank(message = "El nombre no puede estar vacío")
+    @NotBlank(message = "El campo de nombre no puede estar vacío")
     private String nombre;
 
     @Size(max = 50, message = "El apellido puede tener hasta 50 caracteres")
     @NotNull(message = "El apellido no puede ser nulo")
-    @NotBlank(message = "El apellido no puede estar vacío")
+    @NotBlank(message = "El campo de apellido no puede estar vacío")
     private String apellido;
+
+    @OneToMany(mappedBy = "odontologo", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Turno> turnos;
 
     public Odontologo() {
     }
@@ -65,11 +73,5 @@ public class Odontologo {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
-/*
-    @Override
-    public String toString() {
-        return "Id: " + id + " - Nombre: " + nombre + " - Apellido: " + apellido + " - Matricula: " + matricula;
-    }
 
- */
 }
