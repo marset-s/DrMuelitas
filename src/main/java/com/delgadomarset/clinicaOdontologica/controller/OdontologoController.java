@@ -116,8 +116,7 @@ public class OdontologoController {
             @ApiResponse(responseCode = "200",
                     description = "Se eliminó al odontólogo",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = OdontologoDto.class))}
-            ),
+                            schema = @Schema(implementation = OdontologoDto.class))}),
             @ApiResponse(responseCode = "400", description = "Error de tipeo, el id no existe",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Servidor no encontrado",

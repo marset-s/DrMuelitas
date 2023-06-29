@@ -5,9 +5,14 @@ import com.delgadomarset.clinicaOdontologica.entity.Odontologo;
 import com.delgadomarset.clinicaOdontologica.exception.BadRequestException;
 import com.delgadomarset.clinicaOdontologica.exception.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
@@ -31,13 +36,47 @@ class OdontologoServiceTest {
         );
     }
 
+    //tets de Lu
+    // se generan solo con atributo odontologoService con el @Atowired
+
+    //@Autowired
+    //private OdontologoService odontologoService
+
+    @Test
+    void deberiaInsertarUnOdontologo() throws BadRequestException {
+        Odontologo odontologoARegistrar = new Odontologo(
+                "995522222222",
+                "Luciana",
+                "Murga"
+        );
+        OdontologoDto odontologoDto = odontologoService.registrarOdontologo(odontologoARegistrar);
+        Assertions.assertNotNull(odontologoDto);
+        Assertions.assertNotNull(odontologoDto.getId());
+    }
+
+    @Test
+    void cuandoNoSeCumplaElFormatoDeMatricula_noDeberiaRegistrarElOdontologo() throws BadRequestException {
+        Odontologo odontologo = new Odontologo(
+                "99",
+                "Luciana",
+                "Murga"
+        );
+        Assertions.assertThrows(ConstraintViolationException.class, () -> odontologoService.registrarOdontologo(odontologo));
+    }
+
+    @Test
+    void deberiaListarUnSoloOdontologo() {
+        List<OdontologoDto> odontologoDto = odontologoService.listarOdontologos();
+        assertEquals(1, odontologoDto.size());
+    }
+
 
     @Test
     @Order(1)
     void deberiaRegistrarUnOdontologo() throws ResourceNotFoundException, BadRequestException {
         OdontologoDto odontologoDto = odontologoService.registrarOdontologo(odontologo);
-        Assertions.assertEquals("Luciana", odontologoDto.getNombre());
-        Assertions.assertEquals(1L, (long) odontologoDto.getId());
+        assertEquals("Luciana", odontologoDto.getNombre());
+        assertEquals(1L, (long) odontologoDto.getId());
     }
 
 
@@ -52,8 +91,7 @@ class OdontologoServiceTest {
         );
         ObjectMapper mapper = new ObjectMapper();
         OdontologoDto odontologoDto = odontologoService.actualizarOdontologo(mapper.convertValue(nuevoOdontologo, Odontologo.class));
-        Assertions.assertEquals(odontologoService.buscarOdontologoPorId(1L).getNombre(), "Ramona");
-
+        assertEquals(odontologoService.buscarOdontologoPorId(1L).getNombre(), "Ramona");
     }
 
     @Test
@@ -61,6 +99,21 @@ class OdontologoServiceTest {
     void deberiaLanzarResourceNotFoundException() {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> odontologoService.buscarOdontologoPorId(2L));
     }
+
+    @Test
+    void deberiaEliminarElOdontologoId1() throws ResourceNotFoundException {
+        odontologoService.eliminarOdontologo(1L);
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> odontologoService.eliminarOdontologo(1L));
+    }
+
+    /*
+    @Test
+    void deberiaListarUnaListaVacia(){
+        List<OdontologoDto> odontologoDto = odontologoService.listarOdontologos();
+        assertTrue(odontologoDto.isEmpty());
+    }
+
+     */
 
 
 }
