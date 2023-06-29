@@ -79,7 +79,4 @@ public class OdontologoControllerTest {
            e.printStackTrace();
        }
     }
-
-
-
 }

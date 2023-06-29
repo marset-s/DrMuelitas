@@ -32,6 +32,7 @@ public class TurnoDto {
                 OdontologoDto.fromOdontologo(turno.getOdontologo())
         );
     }
+
     public Long getId() {
         return id;
     }

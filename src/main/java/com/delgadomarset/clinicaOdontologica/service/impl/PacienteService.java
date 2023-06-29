@@ -31,6 +31,19 @@ public class PacienteService implements IPacienteService {
         this.objectMapper = objectMapper;
     }
 
+    @Override
+    public PacienteDto registrarPaciente(Paciente paciente) throws BadRequestException {
+        if (paciente.getDomicilio() == null) {
+            throw new BadRequestException("El paciente no tiene un domicilio registrado");
+        }
+
+        PacienteDto pacienteDto = objectMapper.convertValue(pacienteRepository.save(paciente), PacienteDto.class);
+        pacienteDto.setDomicilio(DomicilioDto.fromDomicilio(paciente.getDomicilio()));
+
+        LOGGER.info("Nuevo paciente registrado con éxito: {}", pacienteDto);
+
+        return pacienteDto;
+    }
 
     @Override
     public List<PacienteDto> listarPacientes() {
@@ -46,7 +59,6 @@ public class PacienteService implements IPacienteService {
         LOGGER.info("Lista de todos los pacientes: {}", pacienteDtos);
         return pacienteDtos;
     }
-
 
     @Override
     public PacienteDto buscarPacientePorId(Long id) throws ResourceNotFoundException {
@@ -64,21 +76,6 @@ public class PacienteService implements IPacienteService {
 
         return pacienteDto;
     }
-
-    @Override
-    public PacienteDto registrarPaciente(Paciente paciente) throws BadRequestException {
-        if (paciente.getDomicilio() == null) {
-            throw new BadRequestException("El paciente no tiene un domicilio registrado");
-        }
-
-        PacienteDto pacienteDto = objectMapper.convertValue(pacienteRepository.save(paciente), PacienteDto.class);
-        pacienteDto.setDomicilio(DomicilioDto.fromDomicilio(paciente.getDomicilio()));
-
-        LOGGER.info("Nuevo paciente registrado con éxito: {}", pacienteDto);
-
-        return pacienteDto;
-    }
-
 
     @Override
     public PacienteDto actualizarPaciente(Paciente paciente) throws BadRequestException {

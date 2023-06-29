@@ -19,7 +19,7 @@ public class Odontologo {
 
     @NotNull(message = "La matricula no puede ser nula")
     @NotBlank(message = "El campo de matrícula no puede estar vacío")
-    @Size(min = 10, max = 15,  message = "El campo debe tener mínimo 10 caracteres y máximo 15")
+    @Size(min = 10, max = 15, message = "El campo debe tener mínimo 10 caracteres y máximo 15")
     @Pattern(regexp = "^\\d+$")
     private String matricula;
     @Size(max = 50, message = "El nombre puede tener hasta 50 caracteres")

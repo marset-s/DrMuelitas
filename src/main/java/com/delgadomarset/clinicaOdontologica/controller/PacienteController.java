@@ -44,15 +44,8 @@ public class PacienteController {
     @GetMapping("/{id}")
     public ResponseEntity<PacienteDto> buscarPacientePorId(@PathVariable Long id) throws ResourceNotFoundException {
         ResponseEntity<PacienteDto> response = ResponseEntity.badRequest().build();
-        try {
-            PacienteDto pacienteDto = pacienteService.buscarPacientePorId(id);
-            if (pacienteDto != null) {
-                response = ResponseEntity.ok(pacienteDto);
-            }
-        } catch (ResourceNotFoundException ex) {
-            // Aquí manejamos la excepción, por ejemplo, devolver una respuesta de error específica
-            response = ResponseEntity.notFound().build();
-        }
+        PacienteDto pacienteDto = pacienteService.buscarPacientePorId(id);
+        if (pacienteDto != null) response = ResponseEntity.ok(pacienteDto);
         return response;
     }
 

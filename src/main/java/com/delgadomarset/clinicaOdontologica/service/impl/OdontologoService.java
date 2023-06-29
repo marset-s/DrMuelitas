@@ -27,15 +27,23 @@ public class OdontologoService implements IOdontologoService {
         this.objectMapper = objectMapper;
     }
 
-
     @Override
     public OdontologoDto registrarOdontologo(Odontologo odontologo) throws BadRequestException {
-        //throw new BadRequestException("No se pudo registar al odontólog");
         OdontologoDto odontologoDto = objectMapper.convertValue(odontologoRepository.save(odontologo), OdontologoDto.class);
         LOGGER.info("Se guardó al odontólogo: {}", odontologoDto);
         return odontologoDto;
     }
 
+    @Override
+    public List<OdontologoDto> listarOdontologos() {
+        List<OdontologoDto> odontologoDtos = odontologoRepository
+                .findAll()
+                .stream()
+                .map(odontologo -> objectMapper.convertValue(odontologo, OdontologoDto.class))
+                .toList();
+        LOGGER.info("Listando todos los odontólogos: {}", odontologoDtos);
+        return odontologoDtos;
+    }
 
     @Override
     public OdontologoDto buscarOdontologoPorId(Long id) throws ResourceNotFoundException {
@@ -49,17 +57,6 @@ public class OdontologoService implements IOdontologoService {
             throw new ResourceNotFoundException("El odontólogo no existe en la base de datos");
         }
         return odontologoDto;
-    }
-
-    @Override
-    public List<OdontologoDto> listarOdontologos() {
-        List<OdontologoDto> odontologoDtos = odontologoRepository
-                .findAll()
-                .stream()
-                .map(odontologo -> objectMapper.convertValue(odontologo, OdontologoDto.class))
-                .toList();
-        LOGGER.info("Listando todos los odontólogos: {}", odontologoDtos);
-        return odontologoDtos;
     }
 
     @Override

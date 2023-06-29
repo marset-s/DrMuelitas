@@ -36,41 +36,6 @@ class OdontologoServiceTest {
         );
     }
 
-    //tets de Lu
-    // se generan solo con atributo odontologoService con el @Atowired
-
-    //@Autowired
-    //private OdontologoService odontologoService
-
-    @Test
-    void deberiaInsertarUnOdontologo() throws BadRequestException {
-        Odontologo odontologoARegistrar = new Odontologo(
-                "995522222222",
-                "Luciana",
-                "Murga"
-        );
-        OdontologoDto odontologoDto = odontologoService.registrarOdontologo(odontologoARegistrar);
-        Assertions.assertNotNull(odontologoDto);
-        Assertions.assertNotNull(odontologoDto.getId());
-    }
-
-    @Test
-    void cuandoNoSeCumplaElFormatoDeMatricula_noDeberiaRegistrarElOdontologo() throws BadRequestException {
-        Odontologo odontologo = new Odontologo(
-                "99",
-                "Luciana",
-                "Murga"
-        );
-        Assertions.assertThrows(ConstraintViolationException.class, () -> odontologoService.registrarOdontologo(odontologo));
-    }
-
-    @Test
-    void deberiaListarUnSoloOdontologo() {
-        List<OdontologoDto> odontologoDto = odontologoService.listarOdontologos();
-        assertEquals(1, odontologoDto.size());
-    }
-
-
     @Test
     @Order(1)
     void deberiaRegistrarUnOdontologo() throws ResourceNotFoundException, BadRequestException {
@@ -96,24 +61,32 @@ class OdontologoServiceTest {
 
     @Test
     @Order(3)
+    void deberiaListarUnSoloOdontologo() {
+        List<OdontologoDto> odontologoDto = odontologoService.listarOdontologos();
+        assertEquals(1, odontologoDto.size());
+    }
+
+    @Test
+    @Order(4)
     void deberiaLanzarResourceNotFoundException() {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> odontologoService.buscarOdontologoPorId(2L));
     }
 
     @Test
+    @Order(5)
+    void cuandoNoSeCumplaElFormatoDeMatricula_noDeberiaRegistrarElOdontologo() throws BadRequestException {
+        Odontologo odontologo = new Odontologo(
+                "99",
+                "Luciana",
+                "Murga"
+        );
+        Assertions.assertThrows(ConstraintViolationException.class, () -> odontologoService.registrarOdontologo(odontologo));
+    }
+
+    @Test
+    @Order(6)
     void deberiaEliminarElOdontologoId1() throws ResourceNotFoundException {
         odontologoService.eliminarOdontologo(1L);
         Assertions.assertThrows(ResourceNotFoundException.class, () -> odontologoService.eliminarOdontologo(1L));
     }
-
-    /*
-    @Test
-    void deberiaListarUnaListaVacia(){
-        List<OdontologoDto> odontologoDto = odontologoService.listarOdontologos();
-        assertTrue(odontologoDto.isEmpty());
-    }
-
-     */
-
-
 }

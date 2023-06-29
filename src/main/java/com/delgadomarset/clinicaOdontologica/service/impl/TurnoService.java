@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -36,16 +37,16 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public TurnoDto registrarTurno(Turno turno) throws BadRequestException, ResourceNotFoundException {
+        LocalDateTime date = LocalDateTime.now();
         TurnoDto turnoDto = null;
         PacienteDto paciente = pacienteService.buscarPacientePorId(turno.getPaciente().getId());
         OdontologoDto odontologo = odontologoService.buscarOdontologoPorId(turno.getOdontologo().getId());
 
-        if(paciente == null || odontologo == null) {
-            if(paciente == null && odontologo == null) {
+        if (paciente == null || odontologo == null) {
+            if (paciente == null && odontologo == null) {
                 LOGGER.error("El paciente y el odontologo no se encuentran en nuestra base de datos");
                 throw new BadRequestException("El paciente no se encuentra en nuestra base de datos");
-            }
-            else if (paciente == null){
+            } else if (paciente == null) {
                 LOGGER.error("El paciente no se encuentra en nuestra base de datos");
                 throw new BadRequestException("El paciente no se encuentra en nuestra base de datos");
             } else {

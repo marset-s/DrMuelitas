@@ -76,10 +76,9 @@ class TurnoServiceTest {
 
     @Test
     @Order(3)
-    void prueba() {
+    void deberiaLanzarLaExcepcionConstraintViolationException() {
         Assertions.assertThrows(ConstraintViolationException.class, () -> turnoService.registrarTurno(
                 new Turno(LocalDateTime.of(2023, 6, 1, 1, 0), odontologo, paciente)));
     }
-
 
 }

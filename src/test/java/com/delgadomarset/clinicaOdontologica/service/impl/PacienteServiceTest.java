@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
@@ -19,6 +22,7 @@ class PacienteServiceTest {
 
     private final PacienteService pacienteService;
     private static Paciente paciente;
+
 
     @Autowired
     public PacienteServiceTest(PacienteService pacienteService) {
@@ -65,4 +69,17 @@ class PacienteServiceTest {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> pacienteService.buscarPacientePorId(2L));
     }
 
+    @Test
+    @Order(4)
+    void deberiaListarUnSoloPaciente() {
+        List<PacienteDto> pacienteDtos = pacienteService.listarPacientes();
+        assertEquals(1, pacienteDtos.size());
+    }
+
+    @Test
+    @Order(5)
+    void deberiaEliminarElPaciente1() throws ResourceNotFoundException {
+        pacienteService.eliminarPaciente(1L);
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> pacienteService.eliminarPaciente(1L));
+    }
 }

@@ -87,24 +87,6 @@ public class TurnoController {
         return respuesta;
     }
 
-    //DELETE
-    @Operation(summary = "Eliminar un turno", responses = {
-            @ApiResponse(responseCode = "200",
-                    description = "Se eliminó al turno",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = OdontologoDto.class))}
-            ),
-            @ApiResponse(responseCode = "400", description = "Error de tipeo, el id no existe",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Servidor no encontrado",
-                    content = @Content)
-    })
-    @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<?> eliminarTurno(@PathVariable Long id) throws ResourceNotFoundException {
-        turnoService.eliminarTurno(id);
-        return ResponseEntity.ok("Se ha eliminado al turno");
-    }
-
     //PUT
     @Operation(summary = "Actualizar un turno", responses = {
             @ApiResponse(responseCode = "200",
@@ -124,5 +106,25 @@ public class TurnoController {
         if (turnoDto != null) response = ResponseEntity.ok(turnoDto);
         return response;
     }
+
+    //DELETE
+    @Operation(summary = "Eliminar un turno", responses = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se eliminó al turno",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OdontologoDto.class))}
+            ),
+            @ApiResponse(responseCode = "400", description = "Error de tipeo, el id no existe",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Servidor no encontrado",
+                    content = @Content)
+    })
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarTurno(@PathVariable Long id) throws ResourceNotFoundException {
+        turnoService.eliminarTurno(id);
+        return ResponseEntity.ok("Se ha eliminado al turno");
+    }
+
+
 }
 
