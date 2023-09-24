@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Turnos")
 @CrossOrigin
 @RestController
 @RequestMapping("/turnos")
@@ -31,8 +33,24 @@ public class TurnoController {
         this.turnoService = turnoService;
     }
 
-    //GET
+    //POST
+    @Operation(summary = "Registrar un turno", responses = {
+            @ApiResponse(responseCode = "200",
+                    description = "Turno creado exitosamente",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OdontologoDto.class))}
+            ),
+            @ApiResponse(responseCode = "400", description = "Error de tipeo",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error del servidor",
+                    content = @Content)
+    })
+    @PostMapping("/registrar")
+    public ResponseEntity<TurnoDto> registrarTurno(@RequestBody @Valid Turno turno) throws BadRequestException, ResourceNotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(turnoService.registrarTurno(turno));
+    }
 
+    //GET
     @Operation(summary = "Buscar turno por id", responses = {
             @ApiResponse(responseCode = "200", description = "Turno obtenido correctamente",
                     content = {@Content(mediaType = "application/json",
@@ -44,10 +62,7 @@ public class TurnoController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<TurnoDto> buscarTurnoPorId(@PathVariable Long id) throws ResourceNotFoundException {
-        ResponseEntity<TurnoDto> response = ResponseEntity.badRequest().build();
-        TurnoDto turnoDto = turnoService.buscarTurnoPorId(id);
-        if (turnoDto != null) response = ResponseEntity.ok(turnoDto);
-        return response;
+        return ResponseEntity.ok(turnoService.buscarTurnoPorId(id));
     }
 
     @Operation(summary = "Listado de todos los turnos", responses = {
@@ -66,27 +81,6 @@ public class TurnoController {
         return turnoService.listarTodos();
     }
 
-    //POST
-    @Operation(summary = "Registrar un turno", responses = {
-            @ApiResponse(responseCode = "200",
-                    description = "Turno creado exitosamente",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = OdontologoDto.class))}
-            ),
-            @ApiResponse(responseCode = "400", description = "Error de tipeo",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Error del servidor",
-                    content = @Content)
-    })
-    @PostMapping("/registrar")
-    public ResponseEntity<TurnoDto> guardarTurno(@Valid @RequestBody Turno turno) throws BadRequestException, ResourceNotFoundException {
-        ResponseEntity<TurnoDto> respuesta;
-        TurnoDto turnoDto = turnoService.registrarTurno(turno);
-        if (turnoDto != null) respuesta = new ResponseEntity<>(turnoDto, null, HttpStatus.CREATED);
-        else respuesta = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        return respuesta;
-    }
-
     //PUT
     @Operation(summary = "Actualizar un turno", responses = {
             @ApiResponse(responseCode = "200",
@@ -100,11 +94,8 @@ public class TurnoController {
                     content = @Content)
     })
     @PutMapping("/actualizar")
-    public ResponseEntity<TurnoDto> actualizarTurno(@Valid @RequestBody Turno turno) throws BadRequestException {
-        ResponseEntity<TurnoDto> response = ResponseEntity.badRequest().build();
-        TurnoDto turnoDto = turnoService.actualizarTurno(turno);
-        if (turnoDto != null) response = ResponseEntity.ok(turnoDto);
-        return response;
+    public ResponseEntity<TurnoDto> actualizarTurno(@RequestBody @Valid Turno turno) throws BadRequestException, ResourceNotFoundException {
+        return ResponseEntity.ok(turnoService.actualizarTurno(turno));
     }
 
     //DELETE
@@ -122,7 +113,7 @@ public class TurnoController {
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarTurno(@PathVariable Long id) throws ResourceNotFoundException {
         turnoService.eliminarTurno(id);
-        return ResponseEntity.ok("Se ha eliminado al turno");
+        return ResponseEntity.ok("😉 Turno eliminado con éxito.");
     }
 
 
