@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Pacientes")
 @CrossOrigin
 @RestController
 @RequestMapping("/pacientes")
@@ -30,8 +32,26 @@ public class PacienteController {
         this.pacienteService = pacienteService;
     }
 
-    //GET
+    //POST
+    @Operation(summary = "Registrar un paciente", responses = {
+            @ApiResponse(responseCode = "200",
+                    description = "Paciente creado exitosamente",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OdontologoDto.class))}
+            ),
+            @ApiResponse(responseCode = "400", description = "Error de tipeo",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Error del servidor",
+                    content = @Content)
+    })
+    @PostMapping("/registrar")
+    public ResponseEntity<PacienteDto> registrarPaciente(@RequestBody @Valid Paciente paciente) throws BadRequestException {
+        PacienteDto pacienteGuardado = pacienteService.registrarPaciente(paciente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pacienteGuardado);
+    }
 
+
+    //GET
     @Operation(summary = "Buscar paciente por id", responses = {
             @ApiResponse(responseCode = "200", description = "Paciente obtenido correctamente",
                     content = {@Content(mediaType = "application/json",
@@ -43,10 +63,8 @@ public class PacienteController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<PacienteDto> buscarPacientePorId(@PathVariable Long id) throws ResourceNotFoundException {
-        ResponseEntity<PacienteDto> response = ResponseEntity.badRequest().build();
-        PacienteDto pacienteDto = pacienteService.buscarPacientePorId(id);
-        if (pacienteDto != null) response = ResponseEntity.ok(pacienteDto);
-        return response;
+        PacienteDto pacienteEncontrado = pacienteService.buscarPacientePorId(id);
+        return ResponseEntity.ok(pacienteEncontrado);
     }
 
 
@@ -66,26 +84,6 @@ public class PacienteController {
         return pacienteService.listarPacientes();
     }
 
-    //POST
-    @Operation(summary = "Registrar un paciente", responses = {
-            @ApiResponse(responseCode = "200",
-                    description = "Paciente creado exitosamente",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = OdontologoDto.class))}
-            ),
-            @ApiResponse(responseCode = "400", description = "Error de tipeo",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Error del servidor",
-                    content = @Content)
-    })
-    @PostMapping("/registrar")
-    public ResponseEntity<PacienteDto> guardarPaciente(@Valid @RequestBody Paciente paciente) throws BadRequestException {
-        ResponseEntity<PacienteDto> response = ResponseEntity.badRequest().build();
-        PacienteDto pacienteDto = pacienteService.registrarPaciente(paciente);
-        if (pacienteDto != null) response = ResponseEntity.status(HttpStatus.CREATED).body(pacienteDto);
-        return response;
-    }
-
     //PUT
     @Operation(summary = "Actualizar un paciente", responses = {
             @ApiResponse(responseCode = "200",
@@ -99,13 +97,10 @@ public class PacienteController {
                     content = @Content)
     })
     @PutMapping("/actualizar")
-    public ResponseEntity<PacienteDto> actualizarPaciente(@Valid @RequestBody Paciente paciente) throws BadRequestException {
-        ResponseEntity<PacienteDto> response = ResponseEntity.badRequest().build();
-        PacienteDto pacienteDto = pacienteService.actualizarPaciente(paciente);
-        if (pacienteDto != null) response = ResponseEntity.ok(pacienteDto);
-        return response;
+    public ResponseEntity<PacienteDto> actualizarPaciente(@RequestBody @Valid Paciente paciente) throws ResourceNotFoundException, BadRequestException {
+        PacienteDto pacienteEncontrado = pacienteService.actualizarPaciente(paciente);
+        return ResponseEntity.ok(pacienteEncontrado);
     }
-
 
     //DELETE
     @Operation(summary = "Eliminar un paciente", responses = {
@@ -122,7 +117,7 @@ public class PacienteController {
     @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarPaciente(@PathVariable Long id) throws ResourceNotFoundException {
         pacienteService.eliminarPaciente(id);
-        return ResponseEntity.ok("Se ha eliminado al paciente");
+        return ResponseEntity.ok("😉 Paciente eliminado con éxito.");
     }
 
 }

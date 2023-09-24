@@ -79,18 +79,15 @@ public class PacienteService implements IPacienteService {
 
     @Override
     public PacienteDto actualizarPaciente(Paciente paciente) throws BadRequestException {
-        Paciente pacienteAActualizar = pacienteRepository.findById(paciente.getId()).orElse(null);
-        PacienteDto pacienteActualizadoDto = null;
-        if (pacienteAActualizar != null) {
-            pacienteAActualizar = paciente;
-            pacienteActualizadoDto = registrarPaciente(pacienteAActualizar);
-            LOGGER.warn("El paciente con ID {} ha sido actualizado: {}", pacienteAActualizar.getId(), pacienteActualizadoDto);
-        } else {
-            LOGGER.warn("No es posible actualizar el paciente porque no está registrado en la base de datos");
+        PacienteDto pacienteActualizado;
+        if (!pacienteRepository.existsById(paciente.getId())){
+            LOGGER.warn("No es posible actualizar el paciente.");
             throw new BadRequestException("El paciente no existe en la base de datos");
+        } else {
+            pacienteActualizado = registrarPaciente(paciente);
+            LOGGER.warn("Se ha actualizado al paciente con Id {}: {}", pacienteActualizado.getId(), pacienteActualizado);
         }
-
-        return pacienteActualizadoDto;
+        return pacienteActualizado;
     }
 
     @Override
