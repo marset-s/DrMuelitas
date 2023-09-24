@@ -17,26 +17,26 @@ public class Paciente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 50, message = "El nombre debe tener hasta 50 caracteres")
-    @NotNull(message = "El nombre no puede ser nulo")
-    @NotBlank(message = "El campo de nombre no puede estar vacío")
+    @Size(min = 2, max = 50, message = " 😜 El nombre debe contener entre 2 y 50 caracteres.")
+    @NotNull(message = "😜 campo de nombre no puede estar vacío ni ser nulo.")
+    @NotBlank(message = "😜 campo de nombre no puede estar vacío ni ser nulo.")
     private String nombre;
 
 
-    @Size(max = 50, message = "El apellido debe tener hasta 50 caracteres")
-    @NotNull(message = "El apellido no puede ser nulo")
-    @NotBlank(message = "El campo de apellido no puede estar vacío")
+    @Size(min = 2, max = 50, message = "😜 El apellido debe contener entre 2 y 50 caracteres.")
+    @NotNull(message = "😜 campo de apellido no puede estar vacío ni ser nulo.")
+    @NotBlank(message = "😜")
     private String apellido;
 
 
-    @Pattern(regexp = "\\d+", message = "El DNI debe contener solo números")
+    @Pattern(regexp = "\\d+", message = "😜 El DNI debe contener solo números")
     @Size(max = 12)
-    @NotBlank(message = "El campo del dni del paciente no puede estar vacío")
+    @NotBlank(message = "😜 El campo del dni no puede estar vacío ni ser nulo")
     private String dni;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @FutureOrPresent(message = "La fecha no puede ser anterior al día de hoy")
-    @NotNull(message = "El campo de la fecha de ingreso del paciente no puede estar vacío")
+    @FutureOrPresent(message = "😜 La fecha no puede ser anterior al día de hoy")
+    @NotNull(message = "😜 El campo de la fecha de ingreso del paciente no puede estar vacío")
     private LocalDate fechaIngreso;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

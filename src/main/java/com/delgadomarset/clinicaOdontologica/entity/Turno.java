@@ -16,18 +16,18 @@ public class Turno {
     private Long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
-    @FutureOrPresent(message = "La fecha no puede ser anterior al día de hoy")
-    @NotNull(message = "El campo de fecha y hora del turno no puede estar vacío")
+    @FutureOrPresent(message = "😊 La fecha no puede ser anterior al día de hoy")
+    @NotNull(message = "😊 El campo de fecha y hora del turno no puede estar vacío")
     private LocalDateTime fechaHora;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "odontologo_id", nullable = false)
-    @NotNull(message = "El odontólogo no puede ser nulo.")
+    @NotNull(message = "😊 El odontólogo no puede ser nulo.")
     private Odontologo odontologo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paciente_id", nullable = false)
-    @NotNull(message = "El paciente no puede ser nulo.")
+    @NotNull(message = "😊 El paciente no puede ser nulo.")
     private Paciente paciente;
 
     public Turno() {

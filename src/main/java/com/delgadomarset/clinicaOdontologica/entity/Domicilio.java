@@ -14,22 +14,22 @@ public class Domicilio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 50, message = "El nombre de la calle debe tener hasta 50 caracteres")
-    @NotNull(message = "El nombre de la calle no puede ser nulo")
-    @NotBlank(message = "El nombre de la calle no puede estar vacío")
+    @Size(min = 2, max = 50, message = "😉 El nombre de la calle debe contener entre 2 y 50 caracteres.")
+    @NotNull(message = "😉 El campo de calle no puede estar vacío ni ser nulo.")
+    @NotBlank(message = "😉 El campo de calle no puede estar vacío ni ser nulo.")
     private String calle;
 
 
     private int numero;
 
-    @Size(max = 50, message = "El nombre de la localidad debe tener hasta 50 caracteres")
-    @NotNull(message = "El nombre de la localidad no puede ser nulo")
-    @NotBlank(message = "El nombre de la localidad no puede estar vacío")
+    @Size(min = 2, max = 50, message = "😉 El nombre de la localidad debe contener entre 2 y 50 caracteres.")
+    @NotNull(message = "😉 El campo de localidad no puede estar vacío ni ser nulo.")
+    @NotBlank(message = "😉 El campo de localidad no puede estar vacío ni ser nulo.")
     private String localidad;
 
-    @Size(max = 50, message = "El nombre de la provincia debe tener hasta 50 caracteres")
-    @NotNull(message = "El nombre de la provincia no puede ser nulo")
-    @NotBlank(message = "El nombre de la provincia no puede estar vacío")
+    @Size(min = 2, max = 50, message = "😉 El nombre de la provincia debe contener entre 2 y 50 caracteres.")
+    @NotNull(message = "😉 El campo de provincia no puede estar vacío ni ser nulo.")
+    @NotBlank(message = "😉 El campo de provincia no puede estar vacío ni ser nulo.")
     private String provincia;
 
     public Domicilio() {
