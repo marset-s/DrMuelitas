@@ -42,7 +42,7 @@ class TurnoServiceTest {
     @BeforeAll
     public static void crearTodasLasEntidades() {
         odontologo = new Odontologo(
-                "995522222222",
+                "522222222",
                 "Luciana",
                 "Murga"
         );
@@ -50,10 +50,10 @@ class TurnoServiceTest {
                 "Serrana",
                 "Marset",
                 "2222222222",
-                LocalDate.of(2023, 07, 01),
+                LocalDate.of(2023, 10, 30),
                 new Domicilio("Florida", 2908, "Canelones", "Canelones")
         );
-        turno = new Turno(LocalDateTime.of(2023, 7, 1, 1, 0), odontologo, paciente);
+        turno = new Turno(LocalDateTime.of(2023, 10, 30, 1, 0), odontologo, paciente);
     }
 
 
@@ -64,7 +64,7 @@ class TurnoServiceTest {
         odontologoService.registrarOdontologo(odontologo);
         TurnoDto turnoDto = turnoService.registrarTurno(turno);
 
-        Assertions.assertEquals(LocalDateTime.of(2023, 7, 1, 1, 0), turno.getFechaHora());
+        Assertions.assertEquals(LocalDateTime.of(2023, 10, 30, 1, 0), turno.getFechaHora());
         Assertions.assertEquals(1, (Long) turno.getId());
     }
 

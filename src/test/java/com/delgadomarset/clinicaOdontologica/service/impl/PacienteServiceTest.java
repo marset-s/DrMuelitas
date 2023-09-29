@@ -35,7 +35,7 @@ class PacienteServiceTest {
                 "Serrana",
                 "Marset",
                 "2222222222",
-                LocalDate.of(2023, 07, 01),
+                LocalDate.of(2023, 10, 30),
                 new Domicilio("Florida", 2908, "Canelones", "Canelones")
         );
     }
@@ -55,7 +55,7 @@ class PacienteServiceTest {
                 "Serrana",
                 "Marset",
                 "2222222222",
-                LocalDate.of(2023, 07, 01),
+                LocalDate.of(2023, 10, 30),
                 new DomicilioDto(1L, "Florida", 2908, "Canelones", "Canelones")
         );
         ObjectMapper mapper = new ObjectMapper();

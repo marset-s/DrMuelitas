@@ -30,7 +30,7 @@ class OdontologoServiceTest {
     @BeforeAll
     public static void crearOdontologo() {
         odontologo = new Odontologo(
-                "995522222222",
+                "522222222",
                 "Luciana",
                 "Murga"
         );
@@ -50,7 +50,7 @@ class OdontologoServiceTest {
     void deberiaActualizarOdontologo() throws ResourceNotFoundException, BadRequestException {
         OdontologoDto nuevoOdontologo = new OdontologoDto(
                 1L,
-                "12312333445553",
+                "333445553",
                 "Ramona",
                 "Santana"
         );
